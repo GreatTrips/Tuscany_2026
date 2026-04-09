@@ -99,8 +99,53 @@
     opacity: .6;
     z-index: 5;
   }
-  .camera-container::before { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
-  .camera-container::after { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+  .camera-container::before { top: 12px; left: 12px; border-width: 3px 0 0 3px; width:36px; height:36px; }
+  .camera-container::after  { bottom: 12px; right: 12px; border-width: 0 3px 3px 0; width:36px; height:36px; }
+  /* Extra corners using box-shadow pseudo via inner div */
+  .cam-corners { position:absolute; inset:0; pointer-events:none; z-index:6; }
+  .cam-corners::before {
+    content:''; position:absolute; bottom:12px; left:12px;
+    width:36px; height:36px;
+    border-color:var(--terra-light); border-style:solid;
+    border-width:0 0 3px 3px; opacity:.6;
+  }
+  .cam-corners::after {
+    content:''; position:absolute; top:12px; right:12px;
+    width:36px; height:36px;
+    border-color:var(--terra-light); border-style:solid;
+    border-width:3px 3px 0 0; opacity:.6;
+  }
+  /* Zoom controls */
+  .zoom-controls {
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    display:none; flex-direction:column; gap:6px; z-index:10;
+  }
+  .zoom-btn {
+    width:36px; height:36px; background:rgba(24,17,10,.75);
+    border:1px solid rgba(232,149,106,.5); border-radius:50%;
+    color:var(--terra-light); font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    line-height:1;
+  }
+  .zoom-btn:active { background:rgba(196,98,45,.4); }
+  .zoom-level {
+    background:rgba(24,17,10,.7); color:var(--terra-light);
+    font-size:10px; letter-spacing:.1em; text-align:center;
+    padding:2px 4px; border-radius:2px; display:none;
+    position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
+    z-index:10; white-space:nowrap;
+  }
+  .cam-guide {
+    position:absolute; inset:0; pointer-events:none; z-index:5;
+    display:none;
+    align-items:center; justify-content:center;
+  }
+  .cam-guide-text {
+    background:rgba(24,17,10,.55); color:rgba(250,245,237,.55);
+    font-size:10px; letter-spacing:.15em; text-transform:uppercase;
+    padding:4px 10px; border-radius:2px; text-align:center;
+    position:absolute; bottom:52px;
+  }
 
   /* Buttons */
   .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
@@ -310,6 +355,13 @@
 
   <!-- Viewfinder -->
   <div class="camera-container" id="cameraContainer">
+  <div class="cam-corners" id="camCorners"></div>
+  <div class="cam-guide" id="camGuide"><span class="cam-guide-text">Point at artwork &amp; capture</span></div>
+  <div class="zoom-controls" id="zoomControls">
+    <button class="zoom-btn" id="btnZoomIn"  onclick="adjustZoom(1)"  title="Zoom in">+</button>
+    <button class="zoom-btn" id="btnZoomOut" onclick="adjustZoom(-1)" title="Zoom out">−</button>
+  </div>
+  <div class="zoom-level" id="zoomLevel"></div>
     <video id="videoEl" autoplay playsinline muted></video>
     <canvas id="captureCanvas"></canvas>
     <img class="preview-img" id="previewImg" alt="Captured artwork">
@@ -433,9 +485,14 @@ let isCapturing = false;
 
 // ── CAMERA ──────────────────────────────────────────────────────────────────
 
+// Zoom state
+let currentZoom = 1;
+let minZoom = 1;
+let maxZoom = 1;
+let zoomSupported = false;
+
 async function startCamera() {
   try {
-    // Stop any existing stream
     if (cameraStream) stopCamera();
     
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -447,18 +504,51 @@ async function startCamera() {
     video.srcObject = stream;
     video.style.display = 'block';
     
+    // Check zoom support
+    const track = stream.getVideoTracks()[0];
+    const capabilities = track.getCapabilities ? track.getCapabilities() : {};
+    if (capabilities.zoom) {
+      zoomSupported = true;
+      const settings = track.getSettings();
+      currentZoom = settings.zoom || 1;
+      minZoom = capabilities.zoom.min || 1;
+      maxZoom = capabilities.zoom.max || 5;
+      document.getElementById('zoomControls').style.display = 'flex';
+      updateZoomDisplay();
+    }
+    
     document.getElementById('cameraPlaceholder').style.display = 'none';
     document.getElementById('actionBtns').style.display = 'none';
     document.getElementById('btnCapture').style.display = 'flex';
     document.getElementById('previewImg').style.display = 'none';
     document.getElementById('btnAnalyse').style.display = 'none';
     document.getElementById('btnClear').style.display = 'none';
+    document.getElementById('camGuide').style.display = 'flex';
+    document.getElementById('zoomLevel').style.display = zoomSupported ? 'block' : 'none';
     
     isCapturing = true;
   } catch(e) {
-    // Camera not available — fall back to upload
     alert('Camera not available. Please use the Upload Photo option to select an image from your device.');
   }
+}
+
+async function adjustZoom(direction) {
+  if (!cameraStream || !zoomSupported) return;
+  const track = cameraStream.getVideoTracks()[0];
+  const step = Math.max(0.5, (maxZoom - minZoom) / 8);
+  currentZoom = Math.min(maxZoom, Math.max(minZoom, currentZoom + direction * step));
+  try {
+    await track.applyConstraints({ advanced: [{ zoom: currentZoom }] });
+  } catch(e) {
+    // Some devices need a different API
+    console.log('Zoom constraint:', e.message);
+  }
+  updateZoomDisplay();
+}
+
+function updateZoomDisplay() {
+  const el = document.getElementById('zoomLevel');
+  if (el) el.textContent = currentZoom.toFixed(1) + '×';
 }
 
 function stopCamera() {
@@ -467,6 +557,10 @@ function stopCamera() {
     cameraStream = null;
   }
   document.getElementById('videoEl').style.display = 'none';
+  document.getElementById('zoomControls').style.display = 'none';
+  document.getElementById('zoomLevel').style.display = 'none';
+  document.getElementById('camGuide').style.display = 'none';
+  currentZoom = 1; zoomSupported = false;
   isCapturing = false;
 }
 
@@ -492,6 +586,9 @@ function capturePhoto() {
   stopCamera();
   
   document.getElementById('btnCapture').style.display = 'none';
+  document.getElementById('zoomControls').style.display = 'none';
+  document.getElementById('zoomLevel').style.display = 'none';
+  document.getElementById('camGuide').style.display = 'none';
   document.getElementById('btnAnalyse').style.display = 'flex';
   document.getElementById('btnClear').style.display = 'flex';
 }

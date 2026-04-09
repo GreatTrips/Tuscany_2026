@@ -121,15 +121,15 @@
     if (fb && fb !== img.src) {
       img.onerror = function () {
         img.onerror = null;
-        img.style.visibility = 'hidden';
+        // Show subtle dark placeholder instead of invisible gap
+        img.style.opacity = '0.15';
         img.style.background = '';
         img.style.minHeight = '';
       };
       img.src = fb;
     } else {
-      img.style.visibility = 'hidden';
-      img.style.background = '';
-      img.style.minHeight = '';
+      // No fallback — keep placeholder background visible
+      img.style.opacity = '0.15';
     }
   }
 
