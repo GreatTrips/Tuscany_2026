@@ -467,6 +467,16 @@
     .facts-bar { grid-template-columns: 1fr 1fr; }
     .topbar-links { display: none; }
   }
+
+  .maps-btn {
+    display: inline-flex; align-items: center; gap: .45rem;
+    background: rgba(196,98,45,.1); border: 1px solid rgba(196,98,45,.35);
+    color: var(--terra); text-decoration: none;
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    padding: .45rem 1rem; border-radius: 2px;
+    transition: background .2s, color .2s; margin-top: .6rem; margin-bottom: .4rem;
+  }
+  .maps-btn:hover { background: var(--terra); color: var(--cream); }
 </style>
 </head>
 <body>
@@ -785,7 +795,8 @@
     <p class="section-eyebrow">Your Visit</p>
     <h2>Practical <em>Details</em></h2>
 
-    <div class="practical-grid">
+    <a href="https://www.google.com/maps/place/?q=place_id:ChIJJ7mRvIxVKhMRx6JB-q73TG0" target="_blank" rel="noopener" class="maps-btn">📍 Open in Google Maps</a>
+<div class="practical-grid">
       <div class="practical-item">
         <span class="practical-label">Your entry time</span>
         <span class="practical-val">Sat Apr 11 · 4:15 PM ✓</span>
