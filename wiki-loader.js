@@ -1,87 +1,94 @@
 /**
- * wiki-loader.js
- * Dynamically resolves Wikimedia Commons image URLs via their public API.
- * Works from any origin including local file:// testing.
- *
- * Usage: add data-wiki-file="Filename.jpg" to any <img> tag.
- * The loader will fetch the real URL and set src automatically.
+ * wiki-loader.js — fixed version
+ * Uses 1x1 GIF placeholder (no src="" loops), fetches real URLs via Wikimedia API.
  */
+(function () {
+  var PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  var THUMB_WIDTH = 600;
+  var API = 'https://commons.wikimedia.org/w/api.php';
+  var BATCH = 20;
 
-(function() {
-  const BATCH_SIZE = 20;
-  const THUMB_WIDTH = 600;
-  const API = 'https://commons.wikimedia.org/w/api.php';
-
-  function resolveImages() {
-    const imgs = Array.from(document.querySelectorAll('img[data-wiki-file]'));
+  function init() {
+    var imgs = Array.from(document.querySelectorAll('img[data-wiki-file]'));
     if (!imgs.length) return;
 
-    // Add a loading placeholder style
-    imgs.forEach(img => {
-      if (!img.src || img.src === window.location.href) {
-        img.style.background = 'linear-gradient(135deg, #2C1F14 0%, #3D2B1A 100%)';
-        img.style.minHeight = '120px';
-      }
+    imgs.forEach(function (img) {
+      // Use transparent GIF placeholder - never triggers onerror or self-loading
+      img.src = PLACEHOLDER;
+      img.style.background = '#f0e6d3';
+      img.style.minHeight = '80px';
     });
 
-    // Batch the files
-    for (let i = 0; i < imgs.length; i += BATCH_SIZE) {
-      const batch = imgs.slice(i, i + BATCH_SIZE);
-      const titles = batch.map(img => 'File:' + img.getAttribute('data-wiki-file')).join('|');
+    for (var i = 0; i < imgs.length; i += BATCH) {
+      fetchBatch(imgs.slice(i, i + BATCH));
+    }
+  }
 
-      const url = API + '?action=query' +
-        '&titles=' + encodeURIComponent(titles) +
-        '&prop=imageinfo' +
-        '&iiprop=url' +
-        '&iiurlwidth=' + THUMB_WIDTH +
-        '&format=json' +
-        '&origin=*';
+  function fetchBatch(batch) {
+    var titles = batch.map(function (img) {
+      return 'File:' + img.getAttribute('data-wiki-file');
+    }).join('|');
 
-      fetch(url, { headers: { 'Accept': 'application/json' } })
-        .then(r => r.json())
-        .then(data => {
-          const pages = data?.query?.pages || {};
-          // Build a map of normalised filename → URL
-          const urlMap = {};
-          Object.values(pages).forEach(page => {
-            if (page.imageinfo && page.imageinfo[0]) {
-              const info = page.imageinfo[0];
-              const src = info.thumburl || info.url;
-              // Normalise the title key: strip "File:" prefix, lowercase, replace spaces
-              const key = (page.title || '').replace(/^File:/i, '').replace(/_/g, ' ').toLowerCase();
-              urlMap[key] = src;
-            }
-          });
+    var url = API + '?action=query'
+      + '&titles=' + encodeURIComponent(titles)
+      + '&prop=imageinfo&iiprop=url&iiurlwidth=' + THUMB_WIDTH
+      + '&format=json&origin=*';
 
-          // Apply to images in this batch
-          batch.forEach(img => {
-            const fileAttr = img.getAttribute('data-wiki-file') || '';
-            const key = fileAttr.replace(/_/g, ' ').toLowerCase();
-            const src = urlMap[key];
-            if (src) {
-              img.src = src;
-              img.style.background = '';
-              img.style.minHeight = '';
-            } else {
-              // API found nothing — use the precomputed URL as fallback
-              const precomputed = img.getAttribute('data-fallback-src');
-              if (precomputed) img.src = precomputed;
-            }
-          });
-        })
-        .catch(() => {
-          // On network error, use precomputed fallback URLs
-          batch.forEach(img => {
-            const precomputed = img.getAttribute('data-fallback-src');
-            if (precomputed) img.src = precomputed;
-          });
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var pages = (data.query || {}).pages || {};
+        var map = {};
+        Object.values(pages).forEach(function (p) {
+          var info = (p.imageinfo || [{}])[0];
+          var src = info.thumburl || info.url;
+          if (src) {
+            var key = (p.title || '').replace(/^File:/i, '').replace(/_/g, ' ').toLowerCase().trim();
+            map[key] = src;
+          }
         });
+        batch.forEach(function (img) {
+          var k = (img.getAttribute('data-wiki-file') || '').replace(/_/g, ' ').toLowerCase().trim();
+          if (map[k]) {
+            setImage(img, map[k]);
+          } else {
+            useFallback(img);
+          }
+        });
+      })
+      .catch(function () { batch.forEach(useFallback); });
+  }
+
+  function setImage(img, src) {
+    img.style.background = '';
+    img.style.minHeight = '';
+    img.onerror = function () {
+      img.onerror = null;
+      useFallback(img);
+    };
+    img.src = src;
+  }
+
+  function useFallback(img) {
+    var fb = img.getAttribute('data-fallback-src');
+    if (fb && fb !== img.src) {
+      img.onerror = function () {
+        img.onerror = null;
+        img.style.visibility = 'hidden';
+        img.style.background = '';
+        img.style.minHeight = '';
+      };
+      img.src = fb;
+    } else {
+      img.style.visibility = 'hidden';
+      img.style.background = '';
+      img.style.minHeight = '';
     }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', resolveImages);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    resolveImages();
+    init();
   }
 })();
