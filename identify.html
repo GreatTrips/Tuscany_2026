@@ -485,11 +485,11 @@ let isCapturing = false;
 
 // ── CAMERA ──────────────────────────────────────────────────────────────────
 
-// Zoom state
+// Zoom state — software zoom (CSS scale + canvas crop)
 let currentZoom = 1;
-let minZoom = 1;
-let maxZoom = 1;
-let zoomSupported = false;
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 5;
+const ZOOM_STEP = 0.5;
 
 async function startCamera() {
   try {
@@ -499,24 +499,14 @@ async function startCamera() {
       video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } }
     });
     cameraStream = stream;
-    
+    currentZoom = 1;
+
     const video = document.getElementById('videoEl');
     video.srcObject = stream;
     video.style.display = 'block';
-    
-    // Check zoom support
-    const track = stream.getVideoTracks()[0];
-    const capabilities = track.getCapabilities ? track.getCapabilities() : {};
-    if (capabilities.zoom) {
-      zoomSupported = true;
-      const settings = track.getSettings();
-      currentZoom = settings.zoom || 1;
-      minZoom = capabilities.zoom.min || 1;
-      maxZoom = capabilities.zoom.max || 5;
-      document.getElementById('zoomControls').style.display = 'flex';
-      updateZoomDisplay();
-    }
-    
+    video.style.transform = 'scale(1)';
+    video.style.transformOrigin = 'center center';
+
     document.getElementById('cameraPlaceholder').style.display = 'none';
     document.getElementById('actionBtns').style.display = 'none';
     document.getElementById('btnCapture').style.display = 'flex';
@@ -524,25 +514,24 @@ async function startCamera() {
     document.getElementById('btnAnalyse').style.display = 'none';
     document.getElementById('btnClear').style.display = 'none';
     document.getElementById('camGuide').style.display = 'flex';
-    document.getElementById('zoomLevel').style.display = zoomSupported ? 'block' : 'none';
-    
+    document.getElementById('zoomControls').style.display = 'flex';
+    document.getElementById('zoomLevel').style.display = 'block';
+    updateZoomDisplay();
+
     isCapturing = true;
   } catch(e) {
     alert('Camera not available. Please use the Upload Photo option to select an image from your device.');
   }
 }
 
-async function adjustZoom(direction) {
-  if (!cameraStream || !zoomSupported) return;
-  const track = cameraStream.getVideoTracks()[0];
-  const step = Math.max(0.5, (maxZoom - minZoom) / 8);
-  currentZoom = Math.min(maxZoom, Math.max(minZoom, currentZoom + direction * step));
-  try {
-    await track.applyConstraints({ advanced: [{ zoom: currentZoom }] });
-  } catch(e) {
-    // Some devices need a different API
-    console.log('Zoom constraint:', e.message);
-  }
+// Software zoom: CSS scale the video for display, 
+// then crop canvas on capture to match the visible portion.
+function adjustZoom(direction) {
+  if (!cameraStream) return;
+  currentZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, currentZoom + direction * ZOOM_STEP));
+  const video = document.getElementById('videoEl');
+  video.style.transform = 'scale(' + currentZoom + ')';
+  video.style.transformOrigin = 'center center';
   updateZoomDisplay();
 }
 
@@ -556,11 +545,14 @@ function stopCamera() {
     cameraStream.getTracks().forEach(t => t.stop());
     cameraStream = null;
   }
-  document.getElementById('videoEl').style.display = 'none';
+  const video = document.getElementById('videoEl');
+  video.style.display = 'none';
+  video.style.transform = 'scale(1)';
   document.getElementById('zoomControls').style.display = 'none';
   document.getElementById('zoomLevel').style.display = 'none';
   document.getElementById('camGuide').style.display = 'none';
-  currentZoom = 1; zoomSupported = false;
+  document.getElementById('videoEl').style.transform = 'scale(1)';
+  currentZoom = 1;
   isCapturing = false;
 }
 
@@ -568,23 +560,35 @@ function capturePhoto() {
   const video = document.getElementById('videoEl');
   const canvas = document.getElementById('captureCanvas');
   const ctx = canvas.getContext('2d');
-  
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  ctx.drawImage(video, 0, 0);
-  
-  // Convert to base64
+
+  const vw = video.videoWidth;
+  const vh = video.videoHeight;
+
+  // Crop to the centre region that matches what the CSS scale() zoom is showing.
+  // At zoom 2×, the visible portion is the central 50% × 50% of the raw frame.
+  const cropW = Math.round(vw / currentZoom);
+  const cropH = Math.round(vh / currentZoom);
+  const cropX = Math.round((vw - cropW) / 2);
+  const cropY = Math.round((vh - cropH) / 2);
+
+  // Upscale back to full resolution so the output image is always full-size
+  canvas.width = vw;
+  canvas.height = vh;
+  ctx.drawImage(video, cropX, cropY, cropW, cropH, 0, 0, vw, vh);
+
   const dataURL = canvas.toDataURL('image/jpeg', 0.85);
   currentImageBase64 = dataURL.split(',')[1];
-  
-  // Show preview
+
+  // Reset video transform before hiding
+  video.style.transform = 'scale(1)';
+
   const preview = document.getElementById('previewImg');
   preview.src = dataURL;
   preview.style.display = 'block';
   video.style.display = 'none';
-  
+
   stopCamera();
-  
+
   document.getElementById('btnCapture').style.display = 'none';
   document.getElementById('zoomControls').style.display = 'none';
   document.getElementById('zoomLevel').style.display = 'none';
