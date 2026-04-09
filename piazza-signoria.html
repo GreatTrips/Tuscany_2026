@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piazza della Signoria — Tuscany 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terra: #C4622D; --terra-light: #E8956A; --cream: #FAF5ED;
+    --parchment: #F0E6D3; --dark: #2C1F14; --ink: #3D2B1A;
+    --muted: #8B7355; --stone: #C8B99A; --olive: #6B7C47;
+    --confirmed: #4A7C59; --gold: #B8962E; --blue: #2E6B9E;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--cream); color:var(--ink); font-family:'Jost',sans-serif; font-weight:300; line-height:1.75; }
+  .topbar { background:var(--dark); padding:0 1.5rem; height:52px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(196,98,45,0.3); }
+  .topbar-back { color:var(--terra-light); text-decoration:none; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; }
+  .topbar-back:hover { color:var(--cream); }
+  .topbar-links { display:flex; gap:1rem; align-items:center; }
+  .topbar-links a { color:rgba(250,245,237,.45); text-decoration:none; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; transition:color .2s; }
+  .topbar-links a:hover { color:var(--terra-light); }
+  .hero { min-height:50vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:3rem 1.5rem; position:relative; background-size:cover; background-position:center; }
+  .hero::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(44,31,20,.6) 0%,rgba(44,31,20,.35) 40%,rgba(44,31,20,.75) 100%); }
+  .hero > * { position:relative; z-index:1; }
+  .hero-tag { font-size:.65rem; letter-spacing:.3em; text-transform:uppercase; color:var(--terra-light); margin-bottom:1rem; }
+  .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,6vw,4.5rem); font-weight:300; color:var(--cream); line-height:1.1; margin-bottom:.75rem; }
+  .hero h1 em { font-style:italic; color:var(--terra-light); }
+  .hero-sub { font-size:.85rem; color:rgba(250,245,237,.65); letter-spacing:.05em; max-width:520px; }
+  .hero-badges { display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center; margin-top:1.25rem; }
+  .hero-badge { background:rgba(196,98,45,.25); border:1px solid rgba(232,149,106,.4); color:var(--terra-light); font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; padding:.3rem .8rem; border-radius:2px; }
+  .facts-bar { background:var(--dark); display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); border-bottom:2px solid var(--terra); }
+  .fact-item { padding:1.1rem .9rem; text-align:center; border-right:1px solid rgba(255,255,255,.07); }
+  .fact-item:last-child { border-right:none; }
+  .fact-label { font-size:.55rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(250,245,237,.4); display:block; margin-bottom:.25rem; }
+  .fact-value { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--cream); line-height:1.2; }
+  .content { max-width:760px; margin:0 auto; padding:0 1.5rem; }
+  .section { padding:3rem 0; border-bottom:1px solid var(--parchment); }
+  .section:last-child { border-bottom:none; }
+  .section-eyebrow { font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; color:var(--terra); margin-bottom:.5rem; }
+  .section h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,4vw,2.1rem); font-weight:300; color:var(--dark); margin-bottom:1.1rem; line-height:1.2; }
+  .section h2 em { font-style:italic; color:var(--terra); }
+  .section p { font-size:.9rem; color:var(--ink); margin-bottom:.9rem; line-height:1.75; }
+  .section p strong { font-weight:500; color:var(--dark); }
+  .section h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; color:var(--dark); margin:1.25rem 0 .4rem; }
+  ul.highlights { list-style:none; display:flex; flex-direction:column; gap:.4rem; margin:.75rem 0; }
+  ul.highlights li { font-size:.85rem; color:var(--ink); padding-left:1.2rem; position:relative; line-height:1.55; }
+  ul.highlights li::before { content:'→'; position:absolute; left:0; color:var(--terra-light); font-size:.7rem; top:.12rem; }
+  .callout { margin:.9rem 0; padding:.8rem 1rem; font-size:.83rem; line-height:1.6; border-radius:2px; }
+  .callout.tip { background:rgba(107,124,71,.08); border-left:3px solid var(--olive); }
+  .callout.warn { background:rgba(168,92,30,.08); border-left:3px solid var(--terra); }
+  .callout.info { background:rgba(46,107,158,.07); border-left:3px solid var(--blue); }
+  .callout.food { background:var(--parchment); border-left:3px solid var(--terra-light); }
+  .callout strong { font-weight:500; color:var(--dark); }
+  .callout.warn strong { color:var(--warn,#A85C1E); }
+  .img-row { display:grid; gap:4px; margin:1.25rem 0; }
+  .img-row.one { grid-template-columns:1fr; }
+  .img-row.two { grid-template-columns:1fr 1fr; }
+  .img-row.three { grid-template-columns:1fr 1fr 1fr; }
+  .img-row img { width:100%; height:220px; object-fit:cover; display:block; }
+  .img-row.one img { height:320px; object-fit:cover; object-position:center top; }
+  .img-credit { font-size:.6rem; color:rgba(44,31,20,.4); text-align:right; margin-top:2px; letter-spacing:.05em; }
+  figure { margin:1.25rem 0; border:1px solid var(--stone); overflow:hidden; }
+  figure img { width:100%; display:block; max-height:380px; object-fit:cover; object-position:top center; }
+  figcaption { background:var(--dark); color:rgba(250,245,237,.4); font-size:.62rem; padding:.35rem .75rem; letter-spacing:.06em; }
+  .practical-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:1px; background:var(--stone); border:1px solid var(--stone); margin-top:1.1rem; }
+  .practical-item { background:var(--cream); padding:.9rem 1.1rem; }
+  .practical-label { font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.25rem; }
+  .practical-val { font-size:.83rem; color:var(--dark); font-weight:400; }
+  .highlight-box { background:rgba(196,98,45,.07); border-left:3px solid var(--terra); padding:.7rem 1rem; margin:.75rem 0; font-size:.83rem; font-style:italic; color:var(--ink); }
+  .back-cta { background:var(--dark); padding:2.5rem 1.5rem; text-align:center; }
+  .back-cta p { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-style:italic; color:rgba(250,245,237,.55); margin-bottom:.9rem; }
+  .back-cta a { color:var(--terra-light); text-decoration:none; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; border-bottom:1px solid rgba(232,149,106,.4); padding-bottom:2px; margin:0 .9rem; transition:color .2s; }
+  .back-cta a:hover { color:var(--cream); }
+  @media(max-width:600px){ .img-row.two,.img-row.three{grid-template-columns:1fr;} .topbar-links{display:none;} }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="details.html#day1" class="topbar-back">← Day Details</a>
+  <div class="topbar-links">
+    <a href="index.html">Summary</a>
+    <a href="details.html">Full Itinerary</a>
+  </div>
+</div>
+<div class="hero" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Piazza_della_Signoria_-Russo-.JPG/1200px-Piazza_della_Signoria_-Russo-.JPG')">
+  <p class="hero-tag">Deep Dive · Day 1 · Sat Apr 11 · Afternoon</p>
+  <h1>Piazza della Signoria<br><em>Florence's Living Room</em></h1>
+  <div class="hero-badges"><span class="hero-badge">Free to enter</span><span class="hero-badge">All day access</span><span class="hero-badge">Day 1 afternoon</span></div>
+</div>
+<div class="facts-bar"><div class="fact-item"><span class="fact-label">Location</span><span class="fact-value">City centre</span></div><div class="fact-item"><span class="fact-label">Cost</span><span class="fact-value">Free</span></div><div class="fact-item"><span class="fact-label">Best time</span><span class="fact-value">Evening</span></div><div class="fact-item"><span class="fact-label">Crowds</span><span class="fact-value">Always busy</span></div></div>
+<div class="content"><div class="section"><p class="section-eyebrow">History & Context</p><h2>The Heart of <em>Florentine Power</em></h2><p>For seven centuries, Piazza della Signoria has been the political and civic heart of Florence. Unlike Rome's forums or Venice's Piazza San Marco, this is not a ceremonial space — it's a working square that has witnessed executions, riots, the burning of Savonarola, the coronation of Lorenzo de' Medici, and the exile of the Medici family. Today it's surrounded by outdoor café tables and tour groups, but the stone beneath your feet has absorbed more Florentine history than almost any other spot on earth.</p><p><strong>The L-shaped piazza</strong> was created by demolishing houses belonging to families who had opposed the Guelphs in the 13th century — the awkward shape reflects those boundaries exactly. The result is an asymmetric, dynamic space that feels alive in a way that perfectly symmetrical piazzas often don't.</p></div><div class="section"><p class="section-eyebrow">What to See</p><h2>An <em>Open-Air Museum</em></h2><div class="img-row one"><img src="" data-wiki-file="Piazza_della_Signoria_-Russo-.JPG" data-fallback-src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Piazza_della_Signoria_-Russo-.JPG/800px-Piazza_della_Signoria_-Russo-.JPG" alt="Piazza della Signoria, Florence" loading="lazy" onerror="this.src=this.getAttribute('data-fallback-src')||''"></div><p class="img-credit">Wikimedia Commons / CC BY-SA</p><h3>Palazzo Vecchio — the Old Palace</h3><p>The dominant building, completed 1322. The asymmetric tower (94m) was deliberately built off-centre to avoid sitting on consecrated ground. The rooms inside are extraordinary — frescoed by Vasari for Cosimo I de' Medici with scenes of Florentine military victory. Worth an hour inside if time permits (tickets at the door, Passepartout not valid).</p><h3>The Loggia dei Lanzi</h3><p>An open-air gallery of sculpture, free to enter. Look for: <strong>Perseus with the Head of Medusa</strong> by Cellini (1554) — the greatest bronze sculpture of the Renaissance, and Cellini wrote a rollicking autobiography about the drama of casting it. Also: Giambologna's <strong>Rape of the Sabine Women</strong> (1583) — carved from a single block of marble with three interlocking figures.</p><h3>The Replica David</h3><p>Standing where Michelangelo's original stood from 1504 to 1873. The replica is full-size marble, installed 1910. It's the correct context for how David was originally intended to be seen — framing the entrance to the seat of Florentine government.</p><h3>Neptune Fountain</h3><p>Ammannati's 1565 fountain was so disliked by Florentines that they nicknamed it <em>"il Biancone"</em> (the Big White). Even Michelangelo reportedly said: "What a beautiful piece of marble you have ruined." A useful reminder that contemporary critical failure doesn't map onto historical significance.</p><div class="callout tip"><strong>Photography:</strong> The best angle on the whole piazza is from the second-floor café of the Uffizi (you need a museum ticket). Looking down from above, you see the L-shape, the tower, and all the sculptures in relationship to each other.</div></div><div class="section"><p class="section-eyebrow">Practical Details</p><h2>Your <em>Visit</em></h2><div class="practical-grid"><div class="practical-item"><span class="practical-label">Access</span><span class="practical-val">Free, always open</span></div><div class="practical-item"><span class="practical-label">Best time</span><span class="practical-val">Early morning or after 7pm to avoid peak crowds</span></div><div class="practical-item"><span class="practical-label">Walking</span><span class="practical-val">Entirely flat — excellent for all mobility levels</span></div><div class="practical-item"><span class="practical-label">Nearest</span><span class="practical-val">5 min walk from Uffizi, 8 min from Accademia</span></div></div><div class="callout info"><strong>Day 1 context:</strong> You'll walk through or past the piazza heading toward the Arno after lunch at Zà Zà. The Accademia group will pass it on the walk back. It's best experienced as a pause, not a destination — sit at a café, order a Spritz, and watch Florence happen around you.</div></div></div>
+<div class="back-cta">
+  <p>Ready to continue?</p>
+  <a href="details.html#day1">← Back to Day Details</a>
+  <a href="index.html">Trip Overview</a>
+</div>
+
+<script src="wiki-loader.js"></script>
+<script src="art-id.js"></script>
+</body>
+</html>
