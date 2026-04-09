@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuscany 2026 — April 11–19</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terra: #C4622D;
+    --terra-light: #E8956A;
+    --cream: #FAF5ED;
+    --parchment: #F0E6D3;
+    --dark: #2C1F14;
+    --ink: #3D2B1A;
+    --muted: #8B7355;
+    --olive: #6B7C47;
+    --olive-light: #9BAF68;
+    --stone: #C8B99A;
+    --confirmed: #4A7C59;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background:
+      linear-gradient(to bottom, rgba(44,31,20,0.55) 0%, rgba(44,31,20,0.3) 50%, rgba(44,31,20,0.7) 100%),
+      url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=1600&q=80') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--terra-light);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--terra-light);
+  }
+
+  .hero-dates {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: rgba(250,245,237,0.8);
+    margin-top: 1rem;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .hero-meta-item {
+    text-align: center;
+  }
+
+  .hero-meta-item .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--cream);
+    display: block;
+  }
+
+  .hero-meta-item .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(250,245,237,0.6);
+  }
+
+  .hero-divider {
+    width: 1px;
+    background: rgba(250,245,237,0.25);
+    align-self: stretch;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(250,245,237,0.5);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: fadeIn 1s ease 1.5s both;
+  }
+
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(250,245,237,0.5), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--dark);
+    border-bottom: 1px solid rgba(196,98,45,0.3);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--terra-light);
+    letter-spacing: 0.03em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    overflow-x: auto;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0 0.85rem;
+    color: rgba(250,245,237,0.55);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    white-space: nowrap;
+    height: 52px;
+    line-height: 52px;
+  }
+
+  .nav-links a:hover, .nav-links a.active { color: var(--terra-light); }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 5rem 1.5rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--dark);
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--terra); }
+
+  /* ── OVERVIEW ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--stone);
+    border: 1px solid var(--stone);
+    margin-bottom: 3rem;
+  }
+
+  .overview-card {
+    background: var(--cream);
+    padding: 1.75rem;
+  }
+
+  .overview-card .card-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .overview-card .card-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--dark);
+    line-height: 1.3;
+  }
+
+  /* ── CONFIRMED BOOKINGS ── */
+  .bookings-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .booking-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--parchment);
+    border-left: 3px solid var(--confirmed);
+  }
+
+  .booking-check {
+    width: 18px;
+    height: 18px;
+    background: var(--confirmed);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .booking-check::after {
+    content: '✓';
+    color: white;
+    font-size: 10px;
+  }
+
+  .booking-text strong {
+    display: block;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--dark);
+  }
+
+  .booking-text span {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* ── BASES ── */
+  .bases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .base-card {
+    border: 1px solid var(--stone);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .base-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--terra);
+  }
+
+  .base-dates {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 0.5rem;
+  }
+
+  .base-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    color: var(--dark);
+    margin-bottom: 0.25rem;
+  }
+
+  .base-address {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* ── TIMELINE / DAYS ── */
+  .timeline {
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 32px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--terra), var(--stone), transparent);
+  }
+
+  .day-entry {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    cursor: pointer;
+  }
+
+  .day-number {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    background: var(--dark);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    transition: background 0.2s;
+  }
+
+  .day-entry:hover .day-number { background: var(--terra); }
+
+  .day-number .day-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  .day-number .day-label {
+    font-size: 0.45rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .day-content {
+    flex: 1;
+    padding-top: 0.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--parchment);
+  }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+
+  .day-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--dark);
+  }
+
+  .day-weekday {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .day-base-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--parchment);
+    color: var(--terra);
+    border: 1px solid var(--terra-light);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  .day-stops {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .stop-tag {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    font-weight: 400;
+  }
+
+  .stop-tag.confirmed {
+    background: rgba(74,124,89,0.12);
+    color: var(--confirmed);
+    border: 1px solid rgba(74,124,89,0.3);
+  }
+
+  .stop-tag.main {
+    background: var(--parchment);
+    color: var(--ink);
+    border: 1px solid var(--stone);
+  }
+
+  .stop-tag.optional {
+    background: transparent;
+    color: var(--muted);
+    border: 1px dashed var(--stone);
+  }
+
+  .day-notes {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .day-food {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--parchment);
+    border-left: 2px solid var(--terra-light);
+    font-size: 0.8rem;
+    color: var(--ink);
+  }
+
+  .day-food strong {
+    font-weight: 500;
+    color: var(--terra);
+    margin-right: 0.4rem;
+  }
+
+  /* ── WARNINGS ── */
+  .warnings-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .warning-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--parchment);
+    border-left: 3px solid var(--terra);
+  }
+
+  .warning-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .warning-text {
+    font-size: 0.82rem;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .warning-text strong {
+    font-weight: 500;
+    color: var(--dark);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  /* ── FOOD GUIDE ── */
+  .food-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .food-category {
+    padding: 1.5rem;
+    border: 1px solid var(--stone);
+  }
+
+  .food-category h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--parchment);
+  }
+
+  .food-item {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .food-item::before {
+    content: '—';
+    color: var(--terra);
+    flex-shrink: 0;
+  }
+
+  /* ── CAR INFO ── */
+  .car-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 600px) { .car-grid { grid-template-columns: 1fr; } }
+
+  .car-card {
+    padding: 1.5rem;
+    background: var(--parchment);
+    border: 1px solid var(--stone);
+  }
+
+  .car-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+  }
+
+  .car-detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--stone);
+    gap: 1rem;
+  }
+
+  .car-detail .key { color: var(--muted); }
+  .car-detail .val { color: var(--dark); font-weight: 400; text-align: right; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    color: rgba(250,245,237,0.4);
+    text-align: center;
+    padding: 2.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  footer em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--terra-light);
+    font-size: 0.9rem;
+  }
+
+  /* ── DIVIDER ── */
+  .ornament {
+    text-align: center;
+    color: var(--stone);
+    font-size: 1.2rem;
+    letter-spacing: 0.5rem;
+    margin: 1rem 0 2.5rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.5; }
+    50% { transform: scaleY(0.6); opacity: 1; }
+  }
+
+  /* ── DETAIL LINK ── */
+  .detail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terra);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    margin-top: 0.6rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .detail-link:hover { border-color: var(--terra); color: var(--dark); }
+
+  .full-guide-banner {
+    background: var(--terra);
+    color: var(--cream);
+    text-align: center;
+    padding: 1.25rem 1.5rem;
+  }
+  .full-guide-banner a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .full-guide-banner a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .timeline::before { display: none; }
+    .day-entry { flex-direction: column; gap: 0.75rem; }
+    .day-number { width: 48px; height: 48px; }
+    nav { padding: 0 1rem; }
+    .nav-logo { display: none; }
+    .hero-meta { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <p class="hero-eyebrow">Group of 10 · SAS via Copenhagen</p>
+  <h1>Tuscany<br><em>2026</em></h1>
+  <p class="hero-dates">April 11 – 19 · Florence · Palaia · Chianti · Siena</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="num">9</span>
+      <span class="label">Days</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <span class="num">10</span>
+      <span class="label">Travelers</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <span class="num">3</span>
+      <span class="label">Bases</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <span class="num">4</span>
+      <span class="label">Confirmed ✓</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-arrow"></div>
+    scroll
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Tuscany 2026</span>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#itinerary">Itinerary</a></li>
+    <li><a href="#bases">Bases</a></li>
+    <li><a href="#food">Food</a></li>
+    <li><a href="#logistics">Logistics</a></li>
+    <li><a href="#warnings">⚠ Notes</a></li>
+  </ul>
+</nav>
+
+<!-- FULL GUIDE BANNER -->
+<div class="full-guide-banner">
+  <a href="details.html">📋 View the Full Hour-by-Hour Itinerary →</a>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <p class="section-label">The Trip</p>
+  <h2 class="section-title">Overview &amp; <em>Confirmed</em> Bookings</h2>
+
+  <div class="overview-grid">
+    <div class="overview-card">
+      <p class="card-label">Arrival</p>
+      <p class="card-value">Sat Apr 11<br>FLR 11:30am</p>
+    </div>
+    <div class="overview-card">
+      <p class="card-label">Your Group Departs</p>
+      <p class="card-value">Sat Apr 18<br>FLR 12:20pm</p>
+    </div>
+    <div class="overview-card">
+      <p class="card-label">Other Group Departs</p>
+      <p class="card-value">Sun Apr 19<br>FLR afternoon</p>
+    </div>
+    <div class="overview-card">
+      <p class="card-label">Groups Split</p>
+      <p class="card-value">Day 8 · Sat Apr 18</p>
+    </div>
+    <div class="overview-card">
+      <p class="card-label">Car Pickup</p>
+      <p class="card-value">Borgo Ognissanti<br>Tue Apr 14</p>
+    </div>
+    <div class="overview-card">
+      <p class="card-label">IDP Required</p>
+      <p class="card-value">Apply at AAA<br>5–7 weeks ahead</p>
+    </div>
+  </div>
+
+  <div class="bookings-grid">
+    <div class="booking-item">
+      <div class="booking-check"></div>
+      <div class="booking-text">
+        <strong>Accademia (David)</strong>
+        <span>Sat Apr 11 · 4:15pm · Keep physical ticket</span>
+      </div>
+    </div>
+    <div class="booking-item">
+      <div class="booking-check"></div>
+      <div class="booking-text">
+        <strong>Uffizi Gallery (Passepartout)</strong>
+        <span>Sun Apr 12 · 10:30am · 5-day pass activated Day 2</span>
+      </div>
+    </div>
+    <div class="booking-item">
+      <div class="booking-check"></div>
+      <div class="booking-text">
+        <strong>Crypt of Santa Reparata</strong>
+        <span>Mon Apr 13 · 1:30pm</span>
+      </div>
+    </div>
+    <div class="booking-item">
+      <div class="booking-check"></div>
+      <div class="booking-text">
+        <strong>Duomo Dome Climb</strong>
+        <span>Mon Apr 13 · 6:45pm · Download app on Wi-Fi, bring earphones</span>
+      </div>
+    </div>
+    <div class="booking-item">
+      <div class="booking-check"></div>
+      <div class="booking-text">
+        <strong>Altezza Winery — Tour + Late Lunch</strong>
+        <span>Thu Apr 16 · 4:00pm · San Gimignano · Counts as dinner</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BASES -->
+<section id="bases">
+  <p class="section-label">Accommodation</p>
+  <h2 class="section-title">Where We're <em>Staying</em></h2>
+  <div class="bases-grid">
+    <div class="base-card">
+      <p class="base-dates">Apr 11–14 · Florence</p>
+      <p class="base-name">Florence Airbnb</p>
+      <p class="base-address">Lungarno Serristori 25<br>Oltrarno — 5 min walk to Ponte Vecchio</p>
+    </div>
+    <div class="base-card">
+      <p class="base-dates">Apr 14–16 · Palaia</p>
+      <p class="base-name">Palaia Airbnb</p>
+      <p class="base-address">Via Antonio Vivaldi 24<br>Pisan hills — medieval hilltop village</p>
+    </div>
+    <div class="base-card">
+      <p class="base-dates">Apr 16–18 · Chianti</p>
+      <p class="base-name">Chianti Airbnb</p>
+      <p class="base-address">Strada di Cortine 19<br>Barberino Val d'Elsa — heart of Chianti</p>
+    </div>
+    <div class="base-card">
+      <p class="base-dates">Apr 18–19 · Other Group Only</p>
+      <p class="base-name">Florence Return</p>
+      <p class="base-address">Address TBD<br>One final night before departure</p>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section id="itinerary">
+  <p class="section-label">Day by Day</p>
+  <h2 class="section-title">The Full <em>Itinerary</em></h2>
+
+  <div class="timeline">
+
+    <!-- DAY 1 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">1</span>
+        <span class="day-label">Sat Apr 11</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Arrival Day — Florence</span>
+          <span class="day-weekday">Saturday</span>
+          <span class="day-base-tag">Base: Oltrarno</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag main">Arrive FLR 11:30am</span>
+          <span class="stop-tag confirmed">✓ Accademia / David — 4:15pm</span>
+          <span class="stop-tag main">Piazza della Signoria</span>
+          <span class="stop-tag main">San Miniato al Monte</span>
+          <span class="stop-tag main">Piazzale Michelangelo — sunset</span>
+          <span class="stop-tag optional">Ghost Tour (evening)</span>
+        </div>
+        <p class="day-notes">Elderly traveler: take taxi up to San Miniato (~€8–10), walk down is easy. From San Miniato it's 5 min downhill to Piazzale Michelangelo.</p>
+        <div class="day-food"><strong>Food:</strong> Lampredotto at Da Nerbone · Il Latini or Trattoria Mario for dinner</div>
+        <a href="details.html#day1" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">2</span>
+        <span class="day-label">Sun Apr 12</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Uffizi Day — Florence</span>
+          <span class="day-weekday">Sunday</span>
+          <span class="day-base-tag">Base: Oltrarno</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag confirmed">✓ Uffizi — 10:30am (Passepartout ACTIVATED)</span>
+          <span class="stop-tag main">Ponte Vecchio</span>
+          <span class="stop-tag main">Boboli Gardens / Pitti Palace</span>
+          <span class="stop-tag main">Giardino Bardini</span>
+          <span class="stop-tag optional">Secret Passages — book ahead: musefirenze.it</span>
+        </div>
+        <div class="day-food"><strong>Food:</strong> Schiacciata panino · Il Santo Bevitore for dinner (⭐4.4)</div>
+        <a href="details.html#day2" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">3</span>
+        <span class="day-label">Mon Apr 13</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Duomo Day — Florence</span>
+          <span class="day-weekday">Monday</span>
+          <span class="day-base-tag">Base: Oltrarno</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag main">Santa Croce — 9:30am</span>
+          <span class="stop-tag main">Baptistery — 10:30am</span>
+          <span class="stop-tag main">Bell Tower — 11:15am</span>
+          <span class="stop-tag confirmed">✓ Crypt of Santa Reparata — 1:30pm</span>
+          <span class="stop-tag main">Opera del Duomo Museum</span>
+          <span class="stop-tag confirmed">✓ Dome Climb — 6:45pm</span>
+        </div>
+        <p class="day-notes">Book Bell Tower at duomo.firenze.it. Download Duomo app on Wi-Fi before visit — bring earphones. Bags to cloakroom at Piazza Duomo 38/r.</p>
+        <div class="day-food"><strong>Lunch:</strong> Trattoria Sergio Gozzi — opens noon, opens noon (⭐4.7) · Book table in advance</div>
+        <a href="details.html#day3" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">4</span>
+        <span class="day-label">Tue Apr 14</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Florence → Lucca → Pisa → Palaia</span>
+          <span class="day-weekday">Tuesday</span>
+          <span class="day-base-tag">Move to: Palaia</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag main">Officina Profumo Farmaceutica</span>
+          <span class="stop-tag main">Car pickup — Borgo Ognissanti, 9:30am</span>
+          <span class="stop-tag main">Lucca — walls, piazzas</span>
+          <span class="stop-tag main">Pisa — Leaning Tower</span>
+          <span class="stop-tag main">Check in Palaia ~5:15pm</span>
+        </div>
+        <p class="day-notes">Both groups pick up at Borgo Ognissanti (SMN garage level -4). Citroën C4 automatic. Leaning Tower: no bags — free lockers at ticket office. Book at opapisa.it 1–2 weeks ahead.</p>
+        <div class="day-food"><strong>Lucca:</strong> Buccellato at Taddeucci · Trattoria da Leo (⭐4.1) · <strong>Pisa:</strong> Cecina to-go at piazza forno</div>
+        <a href="details.html#day4" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 5 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">5</span>
+        <span class="day-label">Wed Apr 15</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Larderello → Volterra</span>
+          <span class="day-weekday">Wednesday</span>
+          <span class="day-base-tag">Base: Palaia</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag main">Larderello — geothermal museum (FREE, en route)</span>
+          <span class="stop-tag main">Volterra — Etruscan Museum (~€9)</span>
+          <span class="stop-tag main">Volterra — Pinacoteca (Deposizione)</span>
+          <span class="stop-tag main">Porta all'Arco — Etruscan gate (FREE)</span>
+          <span class="stop-tag main">Alabaster workshops</span>
+          <span class="stop-tag main">Le Balze erosion cliffs (FREE)</span>
+          <span class="stop-tag optional">Roman Theatre lookout — FREE (tickets only Sat–Sun)</span>
+        </div>
+        <p class="day-notes">⚠ Larderello: strong sulfur smell — know before you go. ⚠ Enoteca del Duca closed Wednesdays. Best viewpoint: from Via Vecchia approaching town.</p>
+        <div class="day-food"><strong>Lunch:</strong> La Vecchia Lira (⭐4.6 / 1,782) — open Wed ✓, closed Thu. Book ahead. Truffle pasta + wild boar pici. <strong>Snack:</strong> La Sosta del Priore panino (⭐4.8)</div>
+        <a href="details.html#day5" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 6 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">6</span>
+        <span class="day-label">Thu Apr 16</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Certaldo → San Gimignano → Altezza → Chianti</span>
+          <span class="day-weekday">Thursday</span>
+          <span class="day-base-tag">Move to: Chianti</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag main">Certaldo Alto — funicular (morning only!)</span>
+          <span class="stop-tag main">San Gimignano — towers + Gelateria Dondoli</span>
+          <span class="stop-tag confirmed">✓ Altezza Winery — 4:00pm (counts as dinner)</span>
+          <span class="stop-tag main">Check in Strada di Cortine 19</span>
+        </div>
+        <p class="day-notes">⚠ Certaldo funicular closes at midday — do it first. San Gimignano: park at P1 Giubileo. Best skyline photo: Via Vecchia or northwest approach road. ⚠ Altezza and Tenuta Torciano share a booking system — ensure written confirmation of what's included.</p>
+        <div class="day-food"><strong>Morning:</strong> L'Antica Fonte Certaldo terrace (⭐4.6, open Thu ✓) · <strong>4pm:</strong> Altezza winery 4-course lunch = dinner</div>
+        <a href="details.html#day6" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 7 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">7</span>
+        <span class="day-label">Fri Apr 17</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Monteriggioni → Siena</span>
+          <span class="day-weekday">Friday</span>
+          <span class="day-base-tag">Base: Chianti</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag main">Monteriggioni — circular walled village (45 min)</span>
+          <span class="stop-tag main">Siena — Piazza del Campo + Torre del Mangia</span>
+          <span class="stop-tag main">Siena Duomo + Piccolomini Library</span>
+          <span class="stop-tag main">Afternoon wander — Via di Città, Banchi di Sopra</span>
+          <span class="stop-tag optional">Casa Sola winery — optional visit</span>
+          <span class="stop-tag optional">La Taverna di San Giuseppe — optional dinner (⭐4.6)</span>
+        </div>
+        <p class="day-notes">Park at Parcheggio San Francesco (escalators up). Siena Duomo: book at operaduomo.siena.it. Panforte + ricciarelli from Pasticceria Bini (Banchi di Sopra 24) — take home.</p>
+        <div class="day-food"><strong>Lunch:</strong> Mister Pizza slices (Via delle Terme 94) → eat on Piazza del Campo. ~€12–16/person including Chianti.</div>
+        <a href="details.html#day7" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 8 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">8</span>
+        <span class="day-label">Sat Apr 18</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Groups Split — Departure Day</span>
+          <span class="day-weekday">Saturday</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag confirmed">Your group: leave 9:30am → FLR → departs 12:20pm</span>
+          <span class="stop-tag main">Other group: return cars at FLR → Florence Airbnb</span>
+        </div>
+        <p class="day-notes">Your group: arrive FLR by 11am for 12:20pm flight. Both groups return rental cars to FLR Airport (~€20–40 one-way fee for your group).</p>
+        <a href="details.html#day8" class="detail-link">Full Details →</a>
+      </div>
+    </div>
+
+    <!-- DAY 9 -->
+    <div class="day-entry">
+      <div class="day-number">
+        <span class="day-num">9</span>
+        <span class="day-label">Sun Apr 19</span>
+      </div>
+      <div class="day-content">
+        <div class="day-header">
+          <span class="day-title">Other Group — Final Morning</span>
+          <span class="day-weekday">Sunday · Other Group Only</span>
+        </div>
+        <div class="day-stops">
+          <span class="stop-tag main">Mercato Centrale</span>
+          <span class="stop-tag main">San Lorenzo market</span>
+          <span class="stop-tag main">Final Florence wander</span>
+          <span class="stop-tag main">FLR — afternoon flight</span>
+        </div>
+        <p class="day-notes">⚠ Cappelle Medicee closed Sundays (3rd Sunday of month) — removed from plan. April 19 is 3rd Sunday.</p>
+        <a href="details.html#cph" class="detail-link">Copenhagen Details →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOD GUIDE -->
+<section id="food">
+  <p class="section-label">Eating &amp; Drinking</p>
+  <h2 class="section-title">Regional <em>Specialties</em></h2>
+  <div class="food-categories">
+    <div class="food-category">
+      <h3>🏛 Florence</h3>
+      <div class="food-item">Lampredotto — tripe sandwich, quintessential street food</div>
+      <div class="food-item">Schiacciata — dense flatbread with finocchiona salami</div>
+      <div class="food-item">Bistecca Fiorentina — T-bone, rare, for 2+</div>
+      <div class="food-item">Peposo — peppery beef stew, historic dome workers' dish</div>
+      <div class="food-item">Ribollita — hearty bean and bread soup</div>
+    </div>
+    <div class="food-category">
+      <h3>🏺 Volterra</h3>
+      <div class="food-item">Pecorino delle Balze Volterrane — DOP, walnut-aged, ask for <em>stagionato</em></div>
+      <div class="food-item">Cinghiale in umido — wild boar with olives and capers</div>
+      <div class="food-item">Pici all'aglione — fat hand-rolled pasta, garlic-tomato sauce</div>
+      <div class="food-item">Vernaccia di San Gimignano — local white DOCG wine</div>
+    </div>
+    <div class="food-category">
+      <h3>🗼 San Gimignano</h3>
+      <div class="food-item">Vernaccia — only Tuscan white with DOCG status</div>
+      <div class="food-item">Gelateria Dondoli ⭐ — world champion gelato, pistachio + saffron</div>
+      <div class="food-item">Truffle dishes — local black truffle throughout autumn/spring</div>
+    </div>
+    <div class="food-category">
+      <h3>🏰 Siena</h3>
+      <div class="food-item">Pici all'aglione — Siena's defining pasta, fat hand-rolled</div>
+      <div class="food-item">Panforte — medieval spiced fruit-and-nut cake, buy at Pasticceria Bini</div>
+      <div class="food-item">Ricciarelli — soft almond biscuits with powdered sugar</div>
+      <div class="food-item">Cinta Senese salame — heritage pig, nutty and complex</div>
+      <div class="food-item">Brunello di Montalcino — Siena's prestige red wine</div>
+    </div>
+    <div class="food-category">
+      <h3>🍷 Chianti</h3>
+      <div class="food-item">Chianti Classico DOCG — look for black rooster (gallo nero) seal</div>
+      <div class="food-item">Bistecca with truffles — local specialty at Osteria il Carroccio</div>
+      <div class="food-item">Aged pecorino — from any agriturismo farm shop</div>
+    </div>
+    <div class="food-category">
+      <h3>🥐 Lucca + Pisa</h3>
+      <div class="food-item">Buccellato — sweet anise and raisin bread, Lucca's signature</div>
+      <div class="food-item">Cecina — thin chickpea flour flatbread, Pisa street food</div>
+      <div class="food-item">Farinata — similar to cecina, eaten to-go</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGISTICS -->
+<section id="logistics">
+  <p class="section-label">Getting Around</p>
+  <h2 class="section-title">Cars &amp; <em>Logistics</em></h2>
+  <div class="car-grid">
+    <div class="car-card">
+      <h3>Both Groups — Car Rental</h3>
+      <div class="car-detail"><span class="key">Pickup location</span><span class="val">Borgo Ognissanti, SMN garage level -4</span></div>
+      <div class="car-detail"><span class="key">Pickup date</span><span class="val">Tuesday Apr 14, ~9:30am</span></div>
+      <div class="car-detail"><span class="key">Vehicle</span><span class="val">Citroën C4 automatic</span></div>
+      <div class="car-detail"><span class="key">Boot space</span><span class="val">380L — fits 4 carry-ons + 4 backpacks</span></div>
+      <div class="car-detail"><span class="key">Your group return</span><span class="val">FLR Airport, Sat Apr 18, by 11am</span></div>
+      <div class="car-detail"><span class="key">Insurance</span><span class="val">CDW + zero-deductible mandatory</span></div>
+    </div>
+    <div class="car-card">
+      <h3>ZTL Zones — Important</h3>
+      <div class="car-detail"><span class="key">What is ZTL?</span><span class="val">Restricted traffic zones in all historic centres</span></div>
+      <div class="car-detail"><span class="key">Fines</span><span class="val">~€80 per infraction, charged to rental card</span></div>
+      <div class="car-detail"><span class="key">Florence</span><span class="val">Park at Borgo Ognissanti — don't drive in</span></div>
+      <div class="car-detail"><span class="key">San Gimignano</span><span class="val">P1 Giubileo at first roundabout</span></div>
+      <div class="car-detail"><span class="key">Siena</span><span class="val">Parcheggio San Francesco (escalators up)</span></div>
+      <div class="car-detail"><span class="key">Volterra</span><span class="val">Parcheggio Docciola, outside walls</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WARNINGS -->
+<section id="warnings">
+  <p class="section-label">Before You Go</p>
+  <h2 class="section-title">Important <em>Reminders</em></h2>
+  <div class="warnings-grid">
+    <div class="warning-item">
+      <span class="warning-icon">🪪</span>
+      <div class="warning-text">
+        <strong>IDP — Apply Now</strong>
+        International Driving Permit required in Italy. Apply at AAA immediately — takes 5–7 weeks processing. Don't leave without it.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">🎟</span>
+      <div class="warning-text">
+        <strong>Leaning Tower of Pisa</strong>
+        Book at opapisa.it — 1–2 weeks ahead. No bags at all inside — free lockers at ticket office, arrive 10 min before slot.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">🎵</span>
+      <div class="warning-text">
+        <strong>Duomo Dome Audio Guide</strong>
+        Mobile app only — no rental units. Download on Wi-Fi before your visit. Bring your own earphones.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">🕐</span>
+      <div class="warning-text">
+        <strong>Certaldo Funicular</strong>
+        Closes at midday. Visit Certaldo Alto first thing on Day 6 — do not leave it until afternoon.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">🧾</span>
+      <div class="warning-text">
+        <strong>Altezza Winery Booking</strong>
+        Confirmed Thu Apr 16 at 4pm. Verify written confirmation of exactly what's included and cancellation terms. Shared booking system with Torciano — ensure clarity.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">💨</span>
+      <div class="warning-text">
+        <strong>Larderello Sulfur Smell</strong>
+        Strong sulfur odor throughout the geothermal area. Completely safe but notable — tell the group before arrival so nobody is surprised.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">🏦</span>
+      <div class="warning-text">
+        <strong>Uffizi Passepartout</strong>
+        Keep the physical ticket safe — it's a 5-day pass activated on Day 2. Do not lose it.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">🔒</span>
+      <div class="warning-text">
+        <strong>ZTL Cameras</strong>
+        Fines arrive weeks later charged to your rental card. When in doubt, park outside and walk. GPS may route you through ZTL zones — ignore it.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><em>Tuscany 2026</em></p>
+  <p style="margin-top:0.75rem">April 11–19 · Group of 10 · SAS via Copenhagen</p>
+  <p style="margin-top:0.5rem; font-size:0.65rem; opacity:0.5">For the group's eyes only — buon viaggio 🇮🇹</p>
+</footer>
+
+<script>
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Day entry hover effect
+  document.querySelectorAll('.day-entry').forEach(entry => {
+    entry.addEventListener('mouseenter', () => {
+      entry.style.opacity = '1';
+    });
+  });
+</script>
+
+</body>
+</html>
