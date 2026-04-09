@@ -189,6 +189,105 @@
   }
   .section p strong { font-weight: 500; color: var(--dark); }
 
+  /* ── ARTWORK IMAGES ── */
+  .artwork-img-block {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .artwork-img-block .artwork-img-wrap {
+    overflow: hidden;
+    background: #111;
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .artwork-img-block .artwork-img-wrap img {
+    width: 200px;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    opacity: 0.92;
+    transition: opacity 0.3s;
+  }
+  .artwork-img-block .artwork-img-wrap img:hover { opacity: 1; }
+  .artwork-img-block .artwork-right { display: flex; flex-direction: column; }
+  .artwork-img-block .artwork-header { grid-column: unset; }
+
+  /* Prisoners grid — 4 images side by side */
+  .prisoners-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    margin-bottom: 0.75rem;
+    background: #111;
+  }
+  .prisoners-grid .prisoner-img {
+    overflow: hidden;
+    aspect-ratio: 1 / 2;
+  }
+  .prisoners-grid .prisoner-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+  }
+  .prisoners-grid .prisoner-img img:hover { opacity: 1; }
+  .prisoner-label {
+    font-size: 0.6rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.3rem 0 0;
+  }
+
+  /* Madonna painting */
+  .painting-img-block {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .painting-img-block .painting-img-wrap {
+    overflow: hidden;
+    background: #111;
+    display: flex;
+    align-items: flex-start;
+  }
+  .painting-img-block .painting-img-wrap img {
+    width: 160px;
+    display: block;
+    opacity: 0.92;
+    transition: opacity 0.3s;
+  }
+  .painting-img-block .painting-img-wrap img:hover { opacity: 1; }
+
+  .img-credit {
+    font-size: 0.6rem;
+    color: var(--muted);
+    padding: 0.25rem 0.75rem 0.25rem;
+    text-align: right;
+    background: var(--dark);
+    color: rgba(250,245,237,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 560px) {
+    .artwork-img-block { grid-template-columns: 1fr; }
+    .artwork-img-block .artwork-img-wrap { min-height: 220px; width: 100%; }
+    .artwork-img-block .artwork-img-wrap img { width: 100%; max-height: 280px; }
+    .prisoners-grid { grid-template-columns: repeat(2, 1fr); }
+    .painting-img-block { grid-template-columns: 1fr; }
+    .painting-img-block .painting-img-wrap img { width: 100%; }
+  }
+
   /* ── ARTWORK CARDS ── */
   .artwork-grid {
     display: grid;
@@ -480,6 +579,16 @@
 
     <p><strong>The marble itself:</strong> The Carrara block was 5.5 meters tall but extremely shallow — only about 60 centimeters deep. Every other sculptor refused it as too difficult. Michelangelo saw this as a challenge and worked within the constraint, which is why David is essentially a relief sculpture in the round rather than a fully three-dimensional figure when viewed from the sides.</p>
 
+    <figure style="margin: 1.5rem 0; border: 1px solid var(--stone); overflow: hidden;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/%27David%27_by_Michelangelo_FI_Acca_JBU_014.jpg/600px-%27David%27_by_Michelangelo_FI_Acca_JBU_014.jpg"
+        alt="David by Michelangelo — face close-up" loading="lazy"
+        style="width:100%;display:block;max-height:400px;object-fit:cover;object-position:top center;"
+        onerror="this.style.display='none'">
+      <figcaption style="background:var(--dark);color:rgba(250,245,237,0.45);font-size:0.65rem;padding:0.4rem 0.75rem;letter-spacing:0.08em;">
+        The face of David — Michelangelo carved the veins in his neck, the taut jaw, and eyes that convey a state of concentrated readiness. Photo: Jörg Bittner Unna / Wikimedia Commons / CC BY-SA 3.0
+      </figcaption>
+    </figure>
+
     <div class="callout tip"><strong>What to look for as you walk up the Tribuna corridor:</strong> Don't rush straight to David. Stop at the far end of the hall before you reach him and look at the four unfinished "Prisoners" (also called the Slaves) on either side. These are Michelangelo's most revealing works — figures that appear to be struggling to emerge from the stone. His technique, called <em>non-finito</em> (unfinished), was either intentional philosophy (the idea is already in the stone, the sculptor merely reveals it) or practical necessity — they were left unfinished when his patron changed plans.</div>
   </div>
 
@@ -492,22 +601,32 @@
     <div class="artwork-grid">
 
       <div class="artwork-card">
-        <div class="artwork-header">
-          <div class="artwork-num">1</div>
-          <div class="artwork-title-block">
-            <span class="artwork-title">David</span>
-            <span class="artwork-meta">Michelangelo · 1501–1504 · Carrara marble · Tribuna (end of main hall)</span>
+        <div class="artwork-img-block">
+          <div class="artwork-img-wrap">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/%27David%27_by_Michelangelo_JBU0001.JPG/600px-%27David%27_by_Michelangelo_JBU0001.JPG"
+              alt="David by Michelangelo — full body" loading="lazy"
+              onerror="this.style.display='none'">
+          </div>
+          <div class="artwork-right">
+            <div class="artwork-header">
+              <div class="artwork-num">1</div>
+              <div class="artwork-title-block">
+                <span class="artwork-title">David</span>
+                <span class="artwork-meta">Michelangelo · 1501–1504 · Carrara marble · Tribuna (end of main hall)</span>
+              </div>
+            </div>
+            <div class="artwork-body">
+              <p>Allow 10 full minutes. Walk the full perimeter slowly. Look at him from the side — the compressed depth of the block is remarkable. Look up at his face from directly below for the expression as originally intended. Notice the unfinished quality of the hair versus the polished skin. Look at the sling over his shoulder — barely noticeable until you search for it.</p>
+              <ul>
+                <li>The neck veins are visible — sculpted in marble</li>
+                <li>The pupils are carved in the shape of a heart (best seen with binoculars or zoom camera)</li>
+                <li>The base is original; the marble plinth below it is 19th century</li>
+              </ul>
+              <div class="artwork-highlight">"I saw the angel in the marble and carved until I set him free." — attributed to Michelangelo</div>
+            </div>
           </div>
         </div>
-        <div class="artwork-body">
-          <p>Allow 10 full minutes. Walk the full perimeter slowly. Look at him from the side — the compressed depth of the block is remarkable. Look up at his face from directly below for the expression as originally intended. Notice the unfinished quality of the hair versus the polished skin. Look at the sling over his shoulder — barely noticeable until you search for it.</p>
-          <ul>
-            <li>The neck veins are visible — sculpted in marble</li>
-            <li>The pupils are carved in the shape of a heart (best seen with binoculars or zoom camera)</li>
-            <li>The base is original; the marble plinth below it is 19th century</li>
-          </ul>
-          <div class="artwork-highlight">"I saw the angel in the marble and carved until I set him free." — attributed to Michelangelo</div>
-        </div>
+        <div class="img-credit">Photo: Jörg Bittner Unna / Wikimedia Commons / CC BY-SA 3.0</div>
       </div>
 
       <div class="artwork-card">
@@ -518,7 +637,32 @@
             <span class="artwork-meta">Michelangelo · c. 1519–1534 · Unfinished · Left and right of the Tribuna corridor</span>
           </div>
         </div>
-        <div class="artwork-body">
+        <div class="artwork-body" style="padding-top:0.75rem;">
+          <div class="prisoners-grid">
+            <div class="prisoner-img">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/%27Awakening_Slave%27_by_Michelangelo_-_JBU_01.JPG/600px-%27Awakening_Slave%27_by_Michelangelo_-_JBU_01.JPG"
+                alt="Awakening Slave" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="prisoner-img">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/%27Young_Slave%27_by_Michelangelo_-_JBU_03.JPG/600px-%27Young_Slave%27_by_Michelangelo_-_JBU_03.JPG"
+                alt="Young Slave" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="prisoner-img">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/%27Bearded_Slave%27_by_Michelangelo_-_JBU_01.jpg/600px-%27Bearded_Slave%27_by_Michelangelo_-_JBU_01.jpg"
+                alt="Bearded Slave" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="prisoner-img">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/%27Atlas_Slave%27_by_Michelangelo_-_JBU_01.jpg/600px-%27Atlas_Slave%27_by_Michelangelo_-_JBU_01.jpg"
+                alt="Atlas Slave" loading="lazy" onerror="this.style.display='none'">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:0.75rem;">
+            <p class="prisoner-label">Awakening</p>
+            <p class="prisoner-label">Young</p>
+            <p class="prisoner-label">Bearded</p>
+            <p class="prisoner-label">Atlas</p>
+          </div>
+          <div class="img-credit" style="margin: -0.75rem -1.25rem 0.75rem;">Photo: Jörg Bittner Unna / Wikimedia Commons / CC BY-SA 3.0</div>
           <p>Originally intended for the tomb of Pope Julius II — a project that consumed and frustrated Michelangelo for decades. The four figures were abandoned when the tomb design changed repeatedly. They ended up in the Boboli Gardens for centuries before coming here.</p>
           <ul>
             <li><strong>The Young Slave:</strong> Appears to be wrestling with the stone itself, face only half emerging</li>
@@ -531,68 +675,109 @@
       </div>
 
       <div class="artwork-card">
-        <div class="artwork-header">
-          <div class="artwork-num">3</div>
-          <div class="artwork-title-block">
-            <span class="artwork-title">Saint Matthew</span>
-            <span class="artwork-meta">Michelangelo · 1505–1506 · Unfinished · Entrance of the Tribuna</span>
+        <div class="artwork-img-block">
+          <div class="artwork-img-wrap">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Saint_Matthew_by_Michelangelo-Galleria_dell%27Accademia.jpg/600px-Saint_Matthew_by_Michelangelo-Galleria_dell%27Accademia.jpg"
+              alt="Saint Matthew by Michelangelo" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="artwork-right">
+            <div class="artwork-header">
+              <div class="artwork-num">3</div>
+              <div class="artwork-title-block">
+                <span class="artwork-title">Saint Matthew</span>
+                <span class="artwork-meta">Michelangelo · 1505–1506 · Unfinished · Entrance of the Tribuna</span>
+              </div>
+            </div>
+            <div class="artwork-body">
+              <p>The only work Michelangelo began from a series of twelve apostles commissioned for Florence Cathedral. He abandoned it when Pope Julius II summoned him to Rome. Matthew appears to be hauling himself upright, one arm thrown back — a pose of impossible energy. The unfinished quality here is even more dramatic than the Prisoners.</p>
+              <ul>
+                <li>Notice how the back of the figure is almost completely unworked — raw quarry stone</li>
+                <li>Compare the texture of rough stone versus the polished sections of skin Michelangelo had already worked</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="artwork-body">
-          <p>The only work Michelangelo began from a series of twelve apostles commissioned for Florence Cathedral. He abandoned it when Pope Julius II summoned him to Rome. Matthew appears to be hauling himself upright, one arm thrown back — a pose of impossible energy. The unfinished quality here is even more dramatic than the Prisoners.</p>
-          <ul>
-            <li>Notice how the back of the figure is almost completely unworked — raw quarry stone</li>
-            <li>Compare the texture of rough stone versus the polished sections of skin Michelangelo had already worked</li>
-          </ul>
-        </div>
+        <div class="img-credit">Photo: Wikimedia Commons / Public domain</div>
       </div>
 
       <div class="artwork-card">
-        <div class="artwork-header">
-          <div class="artwork-num">4</div>
-          <div class="artwork-title-block">
-            <span class="artwork-title">Palestrina Pietà</span>
-            <span class="artwork-meta">Attributed to Michelangelo (disputed) · c. 1555 · Side room off Tribuna</span>
+        <div class="artwork-img-block">
+          <div class="artwork-img-wrap">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Michelangelo_Buonarroti-_Piet%C3%A0_di_Palestrina.jpg/500px-Michelangelo_Buonarroti-_Piet%C3%A0_di_Palestrina.jpg"
+              alt="Palestrina Pietà by Michelangelo" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="artwork-right">
+            <div class="artwork-header">
+              <div class="artwork-num">4</div>
+              <div class="artwork-title-block">
+                <span class="artwork-title">Palestrina Pietà</span>
+                <span class="artwork-meta">Attributed to Michelangelo (disputed) · c. 1555 · Side room off Tribuna</span>
+              </div>
+            </div>
+            <div class="artwork-body">
+              <p>Less famous than the Vatican Pietà but more raw and emotionally direct. The Madonna holds Christ's body with an exhausted tenderness, her face barely worked. Whether fully by Michelangelo's hand or partly by a workshop assistant, it's deeply moving.</p>
+              <ul>
+                <li>The unfinished Christ figure is more affecting than a polished version might be</li>
+                <li>Look at Mary's hands — they are among the most expressive passages in the room</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="artwork-body">
-          <p>Less famous than the Vatican Pietà but more raw and emotionally direct. The Madonna holds Christ's body with an exhausted tenderness, her face barely worked. Whether fully by Michelangelo's hand or partly by a workshop assistant, it's deeply moving.</p>
-          <ul>
-            <li>The unfinished Christ figure is more affecting than a polished version might be</li>
-            <li>Look at Mary's hands — they are among the most expressive passages in the room</li>
-          </ul>
-        </div>
+        <div class="img-credit">Photo: Wikimedia Commons / Public domain</div>
       </div>
 
       <div class="artwork-card">
-        <div class="artwork-header">
-          <div class="artwork-num">5</div>
-          <div class="artwork-title-block">
-            <span class="artwork-title">The Gesso Collection (Plaster Casts)</span>
-            <span class="artwork-meta">19th century casts after ancient and Renaissance sculptures · Large side rooms</span>
+        <div class="artwork-img-block">
+          <div class="artwork-img-wrap">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Galleria_dell%27Accademia%2C_salone_del_gesso_01.jpg/500px-Galleria_dell%27Accademia%2C_salone_del_gesso_01.jpg"
+              alt="The Gesso Collection at the Accademia" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="artwork-right">
+            <div class="artwork-header">
+              <div class="artwork-num">5</div>
+              <div class="artwork-title-block">
+                <span class="artwork-title">The Gesso Collection (Plaster Casts)</span>
+                <span class="artwork-meta">19th century casts after ancient and Renaissance sculptures · Large side rooms</span>
+              </div>
+            </div>
+            <div class="artwork-body">
+              <p>Easy to overlook, genuinely fascinating. Hundreds of plaster casts fill the rooms off the main hall — copies of ancient Greek and Roman sculptures used by Academy students for drawing and study. Several are casts of sculptures now lost or in fragmentary form elsewhere.</p>
+              <ul>
+                <li>Look for the cast of the <em>Laocoön</em> — the original in the Vatican is one of the most influential sculptures in Western art history</li>
+                <li>The sheer quantity gives you a sense of how seriously drawing from antiquity was taken in 19th-century art education</li>
+                <li>Excellent for photography — fewer crowds and dramatic white forms</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="artwork-body">
-          <p>Easy to overlook, genuinely fascinating. Hundreds of plaster casts fill the rooms off the main hall — copies of ancient Greek and Roman sculptures used by Academy students for drawing and study. Several are casts of sculptures now lost or in fragmentary form elsewhere.</p>
-          <ul>
-            <li>Look for the cast of the <em>Laocoön</em> — the original in the Vatican is one of the most influential sculptures in Western art history</li>
-            <li>The sheer quantity gives you a sense of how seriously drawing from antiquity was taken in 19th-century art education</li>
-            <li>Excellent for photography — fewer crowds and dramatic white forms</li>
-          </ul>
-        </div>
+        <div class="img-credit">Photo: Wikimedia Commons / CC BY-SA</div>
       </div>
 
       <div class="artwork-card">
-        <div class="artwork-header">
-          <div class="artwork-num">6</div>
-          <div class="artwork-title-block">
-            <span class="artwork-title">Madonna del Mare</span>
-            <span class="artwork-meta">Attributed to Botticelli · c. 1477 · Upper Gallery</span>
+        <div class="painting-img-block">
+          <div class="painting-img-wrap">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Botticelli-madonna-del-mare.jpg/500px-Botticelli-madonna-del-mare.jpg"
+              alt="Madonna del Mare, attributed to Botticelli" loading="lazy"
+              onerror="this.style.display='none'">
+          </div>
+          <div class="artwork-right">
+            <div class="artwork-header">
+              <div class="artwork-num">6</div>
+              <div class="artwork-title-block">
+                <span class="artwork-title">Madonna del Mare</span>
+                <span class="artwork-meta">Attributed to Botticelli · c. 1477 · Upper Gallery</span>
+              </div>
+            </div>
+            <div class="artwork-body">
+              <p>An intimate, tenderly observed Madonna and Child — if it is indeed by Botticelli (some scholars attribute it to his workshop). The sea visible through the window gives the painting an unusual quietness. Worth the short walk to the upper galleries if time permits.</p>
+              <ul>
+                <li>The window glimpse of open sea is rare in Florentine panel paintings of this period</li>
+                <li>Compare the softness of handling here with Botticelli's more monumental Uffizi works — the scale and domestic intimacy are deliberately different</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="artwork-body">
-          <p>An intimate, tenderly observed Madonna and Child — if it is indeed by Botticelli (some scholars attribute it to his workshop). The sea visible through the window gives the painting an unusual quietness. Worth the short walk to the upper galleries if time permits.</p>
-        </div>
+        <div class="img-credit">Photo: Wikimedia Commons / Public domain</div>
       </div>
 
     </div>
