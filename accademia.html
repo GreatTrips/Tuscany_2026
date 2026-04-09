@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galleria dell'Accademia — Deep Dive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terra: #C4622D;
+    --terra-light: #E8956A;
+    --cream: #FAF5ED;
+    --parchment: #F0E6D3;
+    --dark: #2C1F14;
+    --ink: #3D2B1A;
+    --muted: #8B7355;
+    --stone: #C8B99A;
+    --olive: #6B7C47;
+    --confirmed: #4A7C59;
+    --gold: #B8962E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--dark);
+    padding: 0 1.5rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(196,98,45,0.3);
+  }
+  .topbar-back {
+    color: var(--terra-light);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .topbar-back:hover { color: var(--cream); }
+  .topbar-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .topbar-links a {
+    color: rgba(250,245,237,0.45);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .topbar-links a:hover { color: var(--terra-light); }
+
+  /* ── HERO ── */
+  .hero {
+    background:
+      linear-gradient(to bottom, rgba(44,31,20,0.6) 0%, rgba(44,31,20,0.35) 40%, rgba(44,31,20,0.75) 100%),
+      url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1400&q=80') center/cover no-repeat;
+    min-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+  .hero-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terra-light);
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--terra-light); }
+  .hero-sub {
+    font-size: 0.85rem;
+    color: rgba(250,245,237,0.65);
+    letter-spacing: 0.05em;
+    max-width: 500px;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+  .hero-badge {
+    background: rgba(196,98,45,0.25);
+    border: 1px solid rgba(232,149,106,0.4);
+    color: var(--terra-light);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border-radius: 2px;
+  }
+
+  /* ── QUICK FACTS BAR ── */
+  .facts-bar {
+    background: var(--dark);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    border-bottom: 2px solid var(--terra);
+  }
+  .fact-item {
+    padding: 1.25rem 1rem;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.07);
+  }
+  .fact-item:last-child { border-right: none; }
+  .fact-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(250,245,237,0.4);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .fact-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 3.5rem 0;
+    border-bottom: 1px solid var(--parchment);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 0.6rem;
+  }
+  .section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+  }
+  .section h2 em { font-style: italic; color: var(--terra); }
+
+  .section p {
+    font-size: 0.92rem;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+  .section p strong { font-weight: 500; color: var(--dark); }
+
+  /* ── ARTWORK CARDS ── */
+  .artwork-grid {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .artwork-card {
+    border: 1px solid var(--stone);
+    padding: 0;
+    overflow: hidden;
+    background: var(--parchment);
+  }
+  .artwork-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0;
+  }
+  .artwork-num {
+    background: var(--terra);
+    color: var(--cream);
+    width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    flex-shrink: 0;
+  }
+  .artwork-title-block {
+    padding: 1rem 1.25rem 0.75rem;
+  }
+  .artwork-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--dark);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .artwork-meta {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .artwork-body {
+    padding: 0 1.25rem 1.25rem 1.25rem;
+    font-size: 0.85rem;
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  .artwork-body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+  }
+  .artwork-body ul li {
+    padding-left: 1rem;
+    position: relative;
+  }
+  .artwork-body ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--terra-light);
+    font-size: 0.7rem;
+    top: 0.12rem;
+  }
+  .artwork-highlight {
+    background: rgba(196,98,45,0.07);
+    border-left: 3px solid var(--terra);
+    padding: 0.7rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    margin: 1rem 0;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    border-radius: 2px;
+  }
+  .callout.tip { background: rgba(107,124,71,0.08); border-left: 3px solid var(--olive); }
+  .callout.warn { background: rgba(168,92,30,0.08); border-left: 3px solid var(--terra); }
+  .callout.gold { background: rgba(184,150,46,0.08); border-left: 3px solid var(--gold); }
+  .callout strong { font-weight: 500; color: var(--dark); }
+
+  /* ── TIMELINE ── */
+  .mini-timeline { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+  .mini-event {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .mini-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: var(--terra);
+    flex-shrink: 0;
+    width: 52px;
+    text-align: right;
+    font-weight: 400;
+    padding-top: 0.05rem;
+  }
+  .mini-desc {
+    font-size: 0.83rem;
+    color: var(--ink);
+    line-height: 1.55;
+    padding-top: 0.05rem;
+    border-left: 1px solid var(--stone);
+    padding-left: 1rem;
+    flex: 1;
+  }
+
+  /* ── PRACTICAL ── */
+  .practical-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--stone);
+    border: 1px solid var(--stone);
+    margin-top: 1.25rem;
+  }
+  .practical-item {
+    background: var(--cream);
+    padding: 1rem 1.25rem;
+  }
+  .practical-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .practical-val {
+    font-size: 0.85rem;
+    color: var(--dark);
+    font-weight: 400;
+  }
+
+  /* ── BACK CTA ── */
+  .back-cta {
+    background: var(--dark);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    margin-top: 0;
+  }
+  .back-cta p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: rgba(250,245,237,0.6);
+    margin-bottom: 1rem;
+  }
+  .back-cta a {
+    color: var(--terra-light);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(232,149,106,0.4);
+    padding-bottom: 2px;
+    margin: 0 1rem;
+    transition: color 0.2s;
+  }
+  .back-cta a:hover { color: var(--cream); }
+
+  @media (max-width: 600px) {
+    .facts-bar { grid-template-columns: 1fr 1fr; }
+    .topbar-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="details.html#day1" class="topbar-back">← Back to Day 1</a>
+  <div class="topbar-links">
+    <a href="index.html">Summary</a>
+    <a href="details.html">Full Itinerary</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-tag">Deep Dive · Day 1 · Sat Apr 11 · 4:15 PM</p>
+  <h1>Galleria dell'Accademia<br><em>& The David</em></h1>
+  <p class="hero-sub">Florence's most celebrated museum and Michelangelo's impossible masterpiece — everything you need to know before you walk through the door</p>
+  <div class="hero-badges">
+    <span class="hero-badge">✓ Confirmed 4:15 PM</span>
+    <span class="hero-badge">~60 minutes</span>
+    <span class="hero-badge">Half group</span>
+  </div>
+</div>
+
+<!-- QUICK FACTS -->
+<div class="facts-bar">
+  <div class="fact-item">
+    <span class="fact-label">Founded</span>
+    <span class="fact-value">1784</span>
+  </div>
+  <div class="fact-item">
+    <span class="fact-label">David completed</span>
+    <span class="fact-value">1504</span>
+  </div>
+  <div class="fact-item">
+    <span class="fact-label">Height of David</span>
+    <span class="fact-value">5.17 m / 17 ft</span>
+  </div>
+  <div class="fact-item">
+    <span class="fact-label">Weight</span>
+    <span class="fact-value">5,660 kg</span>
+  </div>
+  <div class="fact-item">
+    <span class="fact-label">Michelangelo's age</span>
+    <span class="fact-value">26 when he started</span>
+  </div>
+  <div class="fact-item">
+    <span class="fact-label">The marble</span>
+    <span class="fact-value">Carrara — "the Giant"</span>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- HISTORY -->
+  <div class="section">
+    <p class="section-eyebrow">History &amp; Origins</p>
+    <h2>Why Does This Building <em>Exist?</em></h2>
+    <p>The Galleria dell'Accademia was founded in <strong>1784</strong> by Grand Duke Pietro Leopoldo of Habsburg-Lorraine — not primarily as a public museum, but as a teaching collection for students at the adjacent Academy of Fine Arts (<em>Accademia di Belle Arti</em>). The idea was to surround art students with masterworks they could study and copy. Many of the finest pieces in the collection arrived here because Pietro Leopoldo suppressed numerous Florentine monasteries and convents, and their art needed somewhere to go.</p>
+    <p>The building itself is a converted 13th-century hospital — the <strong>Ospedale di San Matteo</strong> — combined with part of the convent of San Niccolò di Cafaggio. The long central hall, the Tribuna, was specifically constructed in 1882 to house the David after his move from Piazza della Signoria, creating the dramatic corridor of natural skylight the statue now stands under.</p>
+    <p>Today the museum is both a destination in its own right and an essential study collection — the room of plaster casts (<em>gessi</em>), hundreds of them stacked floor to ceiling, was used by 19th-century students exactly as Pietro Leopoldo intended.</p>
+
+    <div class="mini-timeline">
+      <div class="mini-event">
+        <span class="mini-year">1464</span>
+        <span class="mini-desc">The huge block of Carrara marble — nicknamed "the Giant" — is quarried but abandoned in Carrara. It's considered too tall and too problematic to work with.</span>
+      </div>
+      <div class="mini-event">
+        <span class="mini-year">1476</span>
+        <span class="mini-desc">Two sculptors attempt to work the block — Agostino di Duccio and Antonio Rossellino — both abandon it after making some preliminary cuts. The marble lies neglected in the Cathedral workshops for nearly 40 years.</span>
+      </div>
+      <div class="mini-event">
+        <span class="mini-year">1501</span>
+        <span class="mini-desc">The Opera del Duomo (the Cathedral Works committee) commissions 26-year-old Michelangelo to try again. He works for over two years, in secret, with a wooden screen around the block so nobody can watch.</span>
+      </div>
+      <div class="mini-event">
+        <span class="mini-year">1504</span>
+        <span class="mini-desc">David is unveiled in Piazza della Signoria. A committee including Leonardo da Vinci, Botticelli, and Filippino Lippi debates where to place it. They choose the Loggia dei Lanzi — but the city overrules them and puts it in front of the Palazzo Vecchio instead.</span>
+      </div>
+      <div class="mini-event">
+        <span class="mini-year">1527</span>
+        <span class="mini-desc">During political riots, David's left arm is broken in three pieces. Vasari and his apprentice rush in to recover the fragments. The arm is later reattached.</span>
+      </div>
+      <div class="mini-event">
+        <span class="mini-year">1873</span>
+        <span class="mini-desc">To protect the marble from further weather damage and vandalism, David is moved to the Accademia. A bronze replica is installed in the Piazza — the one you see there today. Another replica stands on Piazzale Michelangelo.</span>
+      </div>
+      <div class="mini-event">
+        <span class="mini-year">1991</span>
+        <span class="mini-desc">A visitor with a hammer attacks the statue, damaging several toes on the left foot. The Accademia installs protective barriers after the incident.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE DAVID -->
+  <div class="section">
+    <p class="section-eyebrow">The Star of the Show</p>
+    <h2>Michelangelo's <em>David</em> — Everything You Need to Know</h2>
+
+    <p><strong>Who commissioned it?</strong> The <em>Opera di Santa Maria del Fiore</em> — the committee that managed Florence Cathedral. The original brief was to carve a series of Old Testament prophets to stand on the cathedral's roofline buttresses, seen from far below. This explains why David is so colossal: he was designed for a viewing angle that never happened.</p>
+
+    <p><strong>Who is David?</strong> The biblical shepherd-warrior who killed the giant Goliath with a slingshot. But Michelangelo made a radical choice: most Renaissance depictions of David show him <em>after</em> the battle — victorious, Goliath's severed head at his feet (as in Donatello's famous bronze). Michelangelo shows him <em>before</em> — tense, watchful, his sling draped over his left shoulder, a stone in his right hand, eyes fixed on an enemy not yet defeated. This moment of concentrated, contained power is what makes the sculpture so unlike anything before it.</p>
+
+    <div class="callout gold"><strong>The political reading:</strong> Florence had just expelled the ruling Medici family and was trying to reestablish its republic. David — the small underdog who defeats the overwhelming giant — became the symbol of Florentine civic virtue. David <em>is</em> Florence, staring down its powerful enemies (Rome, Milan, the returning Medici). This is why the statue was placed in front of the seat of government, not the Cathedral.</div>
+
+    <p><strong>The "mistakes" that aren't mistakes:</strong> David's right hand is noticeably larger than his left — a deliberate choice. In Italian, <em>destra</em> means both "right hand" and "skill." The hand that will hurl the stone is the hand of mastery. His head and hands are also slightly oversized relative to the body — again deliberate, designed to read correctly when viewed from far below at an angle. Up close, this gives him an almost disquieting intensity.</p>
+
+    <p><strong>His eyes:</strong> They look to his left — the traditional direction of an enemy or rival. Some scholars believe this is directed toward Rome, a statement about Florence's relationship with the papacy and its own political independence.</p>
+
+    <p><strong>The marble itself:</strong> The Carrara block was 5.5 meters tall but extremely shallow — only about 60 centimeters deep. Every other sculptor refused it as too difficult. Michelangelo saw this as a challenge and worked within the constraint, which is why David is essentially a relief sculpture in the round rather than a fully three-dimensional figure when viewed from the sides.</p>
+
+    <div class="callout tip"><strong>What to look for as you walk up the Tribuna corridor:</strong> Don't rush straight to David. Stop at the far end of the hall before you reach him and look at the four unfinished "Prisoners" (also called the Slaves) on either side. These are Michelangelo's most revealing works — figures that appear to be struggling to emerge from the stone. His technique, called <em>non-finito</em> (unfinished), was either intentional philosophy (the idea is already in the stone, the sculptor merely reveals it) or practical necessity — they were left unfinished when his patron changed plans.</div>
+  </div>
+
+  <!-- TOP ARTWORKS -->
+  <div class="section">
+    <p class="section-eyebrow">What to See</p>
+    <h2>Top Works in <em>60 Minutes</em></h2>
+    <p>In your allocated hour, here are the must-sees in order of importance.</p>
+
+    <div class="artwork-grid">
+
+      <div class="artwork-card">
+        <div class="artwork-header">
+          <div class="artwork-num">1</div>
+          <div class="artwork-title-block">
+            <span class="artwork-title">David</span>
+            <span class="artwork-meta">Michelangelo · 1501–1504 · Carrara marble · Tribuna (end of main hall)</span>
+          </div>
+        </div>
+        <div class="artwork-body">
+          <p>Allow 10 full minutes. Walk the full perimeter slowly. Look at him from the side — the compressed depth of the block is remarkable. Look up at his face from directly below for the expression as originally intended. Notice the unfinished quality of the hair versus the polished skin. Look at the sling over his shoulder — barely noticeable until you search for it.</p>
+          <ul>
+            <li>The neck veins are visible — sculpted in marble</li>
+            <li>The pupils are carved in the shape of a heart (best seen with binoculars or zoom camera)</li>
+            <li>The base is original; the marble plinth below it is 19th century</li>
+          </ul>
+          <div class="artwork-highlight">"I saw the angel in the marble and carved until I set him free." — attributed to Michelangelo</div>
+        </div>
+      </div>
+
+      <div class="artwork-card">
+        <div class="artwork-header">
+          <div class="artwork-num">2</div>
+          <div class="artwork-title-block">
+            <span class="artwork-title">The Four Prisoners (Slaves)</span>
+            <span class="artwork-meta">Michelangelo · c. 1519–1534 · Unfinished · Left and right of the Tribuna corridor</span>
+          </div>
+        </div>
+        <div class="artwork-body">
+          <p>Originally intended for the tomb of Pope Julius II — a project that consumed and frustrated Michelangelo for decades. The four figures were abandoned when the tomb design changed repeatedly. They ended up in the Boboli Gardens for centuries before coming here.</p>
+          <ul>
+            <li><strong>The Young Slave:</strong> Appears to be wrestling with the stone itself, face only half emerging</li>
+            <li><strong>The Bearded Slave:</strong> Most complete of the four — you can see the different stages of roughing-out versus finishing work</li>
+            <li><strong>The Awakening Slave:</strong> The most famous — a figure that seems to be pulling itself out of sleep, or out of the earth</li>
+            <li><strong>The Atlas Slave:</strong> Named for the figure's hunched posture carrying an invisible weight</li>
+          </ul>
+          <div class="artwork-highlight">Look at the tool marks. You can see Michelangelo's chisel strokes on the rough stone — unmediated contact with his hand, 500 years ago.</div>
+        </div>
+      </div>
+
+      <div class="artwork-card">
+        <div class="artwork-header">
+          <div class="artwork-num">3</div>
+          <div class="artwork-title-block">
+            <span class="artwork-title">Saint Matthew</span>
+            <span class="artwork-meta">Michelangelo · 1505–1506 · Unfinished · Entrance of the Tribuna</span>
+          </div>
+        </div>
+        <div class="artwork-body">
+          <p>The only work Michelangelo began from a series of twelve apostles commissioned for Florence Cathedral. He abandoned it when Pope Julius II summoned him to Rome. Matthew appears to be hauling himself upright, one arm thrown back — a pose of impossible energy. The unfinished quality here is even more dramatic than the Prisoners.</p>
+          <ul>
+            <li>Notice how the back of the figure is almost completely unworked — raw quarry stone</li>
+            <li>Compare the texture of rough stone versus the polished sections of skin Michelangelo had already worked</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="artwork-card">
+        <div class="artwork-header">
+          <div class="artwork-num">4</div>
+          <div class="artwork-title-block">
+            <span class="artwork-title">Palestrina Pietà</span>
+            <span class="artwork-meta">Attributed to Michelangelo (disputed) · c. 1555 · Side room off Tribuna</span>
+          </div>
+        </div>
+        <div class="artwork-body">
+          <p>Less famous than the Vatican Pietà but more raw and emotionally direct. The Madonna holds Christ's body with an exhausted tenderness, her face barely worked. Whether fully by Michelangelo's hand or partly by a workshop assistant, it's deeply moving.</p>
+          <ul>
+            <li>The unfinished Christ figure is more affecting than a polished version might be</li>
+            <li>Look at Mary's hands — they are among the most expressive passages in the room</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="artwork-card">
+        <div class="artwork-header">
+          <div class="artwork-num">5</div>
+          <div class="artwork-title-block">
+            <span class="artwork-title">The Gesso Collection (Plaster Casts)</span>
+            <span class="artwork-meta">19th century casts after ancient and Renaissance sculptures · Large side rooms</span>
+          </div>
+        </div>
+        <div class="artwork-body">
+          <p>Easy to overlook, genuinely fascinating. Hundreds of plaster casts fill the rooms off the main hall — copies of ancient Greek and Roman sculptures used by Academy students for drawing and study. Several are casts of sculptures now lost or in fragmentary form elsewhere.</p>
+          <ul>
+            <li>Look for the cast of the <em>Laocoön</em> — the original in the Vatican is one of the most influential sculptures in Western art history</li>
+            <li>The sheer quantity gives you a sense of how seriously drawing from antiquity was taken in 19th-century art education</li>
+            <li>Excellent for photography — fewer crowds and dramatic white forms</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="artwork-card">
+        <div class="artwork-header">
+          <div class="artwork-num">6</div>
+          <div class="artwork-title-block">
+            <span class="artwork-title">Madonna del Mare</span>
+            <span class="artwork-meta">Attributed to Botticelli · c. 1477 · Upper Gallery</span>
+          </div>
+        </div>
+        <div class="artwork-body">
+          <p>An intimate, tenderly observed Madonna and Child — if it is indeed by Botticelli (some scholars attribute it to his workshop). The sea visible through the window gives the painting an unusual quietness. Worth the short walk to the upper galleries if time permits.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WHAT MAKES IT STAND OUT -->
+  <div class="section">
+    <p class="section-eyebrow">Why This Museum Matters</p>
+    <h2>What Makes the Accademia <em>Different</em></h2>
+    <p>Florence has four or five museums that could justify their own dedicated trip. The Accademia is smaller than the Uffizi and more focused. Where the Uffizi is a survey of centuries of painting, the Accademia is essentially about one sculptor — Michelangelo — and what it meant to make things by hand with stone and chisel.</p>
+    <p>The Uffizi shows you what Florentine civilization produced. The Accademia shows you <em>how</em> it was produced — the process, the struggle, the unfinished ideas, the compromise between vision and material. The Prisoners are more honest about creative difficulty than almost any finished artwork.</p>
+    <p>David himself is simply impossible until you're standing in front of him. No photograph — including very good ones — prepares you for the scale, the grain of the marble under daylight, or the uncanny sense that the figure is not quite still. The experience is different from viewing a painting: you move around it, it changes, it has weight and shadow and presence in a way that two-dimensional work cannot.</p>
+    <div class="callout tip"><strong>For the teenagers:</strong> The backstory matters here — a 26-year-old who was considered good but not yet great, given a block that two established masters had abandoned as worthless, who then produced something that stopped Florence in its tracks. That's the story to tell on the walk over.</div>
+  </div>
+
+  <!-- PRACTICAL -->
+  <div class="section">
+    <p class="section-eyebrow">Your Visit</p>
+    <h2>Practical <em>Details</em></h2>
+
+    <div class="practical-grid">
+      <div class="practical-item">
+        <span class="practical-label">Your entry time</span>
+        <span class="practical-val">Sat Apr 11 · 4:15 PM ✓</span>
+      </div>
+      <div class="practical-item">
+        <span class="practical-label">Address</span>
+        <span class="practical-val">Via Ricasoli, 58/60 · Florence</span>
+      </div>
+      <div class="practical-item">
+        <span class="practical-label">Nearest piazza</span>
+        <span class="practical-val">Piazza San Marco (2 min walk)</span>
+      </div>
+      <div class="practical-item">
+        <span class="practical-label">Duration</span>
+        <span class="practical-val">60 minutes — plenty</span>
+      </div>
+      <div class="practical-item">
+        <span class="practical-label">Bags</span>
+        <span class="practical-val">Max 40×30×18cm only — no cloakroom. Leave large bags at Airbnb.</span>
+      </div>
+      <div class="practical-item">
+        <span class="practical-label">Audio guide</span>
+        <span class="practical-val">~€5 at the bookshop inside</span>
+      </div>
+      <div class="practical-item">
+        <span class="practical-label">Water bottles</span>
+        <span class="practical-val">Plastic only (0.5L max). Metal/glass not permitted.</span>
+      </div>
+      <div class="practical-item">
+        <span class="practical-label">Photography</span>
+        <span class="practical-val">Allowed — no flash. No selfie sticks.</span>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:1.25rem"><strong>Split logistics:</strong> The 7 museum-goers walk from Trattoria Zà Zà (~8 min). Elders and remaining adults wait at cafés in Piazza San Marco nearby — comfortable seating, gelato options, people-watching. Meet at the San Marco church steps at 5:15 PM, then all walk toward the Arno together for the sunset provision run.</div>
+  </div>
+
+</div>
+
+<!-- BACK CTA -->
+<div class="back-cta">
+  <p>Ready to move on?</p>
+  <a href="details.html#day1">← Back to Day 1 Itinerary</a>
+  <a href="index.html">Trip Overview</a>
+</div>
+
+</body>
+</html>

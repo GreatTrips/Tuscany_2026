@@ -355,14 +355,15 @@
 
   .day-number {
     flex-shrink: 0;
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     background: var(--dark);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
     position: relative;
     z-index: 1;
     transition: background 0.2s;
@@ -370,19 +371,31 @@
 
   .day-entry:hover .day-number { background: var(--terra); }
 
+  .day-number .day-word {
+    font-size: 0.48rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra-light);
+    line-height: 1;
+    margin-bottom: 1px;
+  }
+
   .day-number .day-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 300;
     color: var(--cream);
     line-height: 1;
   }
 
   .day-number .day-label {
-    font-size: 0.45rem;
-    letter-spacing: 0.2em;
+    font-size: 0.42rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--stone);
+    text-align: center;
+    line-height: 1.2;
+    margin-top: 1px;
   }
 
   .day-content {
@@ -622,6 +635,15 @@
     50% { transform: scaleY(0.6); opacity: 1; }
   }
 
+  .stop-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+  }
+  .stop-link:hover { opacity: 0.8; transform: translateY(-1px); }
+
   /* ── DETAIL LINK ── */
   .detail-link {
     display: inline-flex;
@@ -743,10 +765,7 @@
       <p class="card-label">Car Pickup</p>
       <p class="card-value">Borgo Ognissanti<br>Tue Apr 14</p>
     </div>
-    <div class="overview-card">
-      <p class="card-label">IDP Required</p>
-      <p class="card-value">Apply at AAA<br>5–7 weeks ahead</p>
-    </div>
+
   </div>
 
   <div class="bookings-grid">
@@ -826,8 +845,9 @@
     <!-- DAY 1 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">1</span>
-        <span class="day-label">Sat Apr 11</span>
+        <span class="day-label">Apr 11</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -837,11 +857,10 @@
         </div>
         <div class="day-stops">
           <span class="stop-tag main">Arrive FLR 11:30am</span>
-          <span class="stop-tag confirmed">✓ Accademia / David — 4:15pm</span>
+          <a href="accademia.html" class="stop-tag confirmed stop-link">✓ Accademia / David — 4:15pm ℹ</a>
           <span class="stop-tag main">Piazza della Signoria</span>
           <span class="stop-tag main">San Miniato al Monte</span>
           <span class="stop-tag main">Piazzale Michelangelo — sunset</span>
-          <span class="stop-tag optional">Ghost Tour (evening)</span>
         </div>
         <p class="day-notes">Elderly traveler: take taxi up to San Miniato (~€8–10), walk down is easy. From San Miniato it's 5 min downhill to Piazzale Michelangelo.</p>
         <div class="day-food"><strong>Food:</strong> Lampredotto at Da Nerbone · Il Latini or Trattoria Mario for dinner</div>
@@ -852,8 +871,9 @@
     <!-- DAY 2 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">2</span>
-        <span class="day-label">Sun Apr 12</span>
+        <span class="day-label">Apr 12</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -867,6 +887,7 @@
           <span class="stop-tag main">Boboli Gardens / Pitti Palace</span>
           <span class="stop-tag main">Giardino Bardini</span>
           <span class="stop-tag optional">Secret Passages — book ahead: musefirenze.it</span>
+          <span class="stop-tag confirmed">✓ Dark Side of Florence Tour — 7:55pm</span>
         </div>
         <div class="day-food"><strong>Food:</strong> Schiacciata panino · Il Santo Bevitore for dinner (⭐4.4)</div>
         <a href="details.html#day2" class="detail-link">Full Details →</a>
@@ -876,8 +897,9 @@
     <!-- DAY 3 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">3</span>
-        <span class="day-label">Mon Apr 13</span>
+        <span class="day-label">Apr 13</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -902,8 +924,9 @@
     <!-- DAY 4 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">4</span>
-        <span class="day-label">Tue Apr 14</span>
+        <span class="day-label">Apr 14</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -927,8 +950,9 @@
     <!-- DAY 5 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">5</span>
-        <span class="day-label">Wed Apr 15</span>
+        <span class="day-label">Apr 15</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -954,8 +978,9 @@
     <!-- DAY 6 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">6</span>
-        <span class="day-label">Thu Apr 16</span>
+        <span class="day-label">Apr 16</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -978,8 +1003,9 @@
     <!-- DAY 7 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">7</span>
-        <span class="day-label">Fri Apr 17</span>
+        <span class="day-label">Apr 17</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -1004,8 +1030,9 @@
     <!-- DAY 8 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">8</span>
-        <span class="day-label">Sat Apr 18</span>
+        <span class="day-label">Apr 18</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -1024,8 +1051,9 @@
     <!-- DAY 9 -->
     <div class="day-entry">
       <div class="day-number">
+        <span class="day-word">Day</span>
         <span class="day-num">9</span>
-        <span class="day-label">Sun Apr 19</span>
+        <span class="day-label">Apr 19</span>
       </div>
       <div class="day-content">
         <div class="day-header">
@@ -1127,13 +1155,6 @@
   <h2 class="section-title">Important <em>Reminders</em></h2>
   <div class="warnings-grid">
     <div class="warning-item">
-      <span class="warning-icon">🪪</span>
-      <div class="warning-text">
-        <strong>IDP — Apply Now</strong>
-        International Driving Permit required in Italy. Apply at AAA immediately — takes 5–7 weeks processing. Don't leave without it.
-      </div>
-    </div>
-    <div class="warning-item">
       <span class="warning-icon">🎟</span>
       <div class="warning-text">
         <strong>Leaning Tower of Pisa</strong>
@@ -1173,6 +1194,13 @@
       <div class="warning-text">
         <strong>Uffizi Passepartout</strong>
         Keep the physical ticket safe — it's a 5-day pass activated on Day 2. Do not lose it.
+      </div>
+    </div>
+    <div class="warning-item">
+      <span class="warning-icon">📮</span>
+      <div class="warning-text">
+        <strong>Buy Postcards &amp; Mail!</strong>
+        Pick up postcards in Florence or Siena and mail them home — Italian post is slow (2–4 weeks), so send early. Look for yellow <em>La Posta Italiana</em> boxes or tabacchi shops for stamps (<em>francobolli</em>). A postcard to the US costs ~€2.40.
       </div>
     </div>
     <div class="warning-item">
@@ -1216,12 +1244,61 @@
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(s => observer.observe(s));
 
-  // Day entry hover effect
-  document.querySelectorAll('.day-entry').forEach(entry => {
-    entry.addEventListener('mouseenter', () => {
-      entry.style.opacity = '1';
-    });
-  });
+  // ── AUTO-JUMP TO CURRENT DAY ──
+  // Map each day entry to its calendar date (yyyy-mm-dd)
+  const DAY_DATES = {
+    'day-0':  '2026-04-10',
+    'day-1':  '2026-04-11',
+    'day-2':  '2026-04-12',
+    'day-3':  '2026-04-13',
+    'day-4':  '2026-04-14',
+    'day-5':  '2026-04-15',
+    'day-6':  '2026-04-16',
+    'day-7':  '2026-04-17',
+    'day-8':  '2026-04-18',
+    'day-9':  '2026-04-19',
+  };
+
+  (function autoJumpToToday() {
+    const today = new Date();
+    const todayStr = today.toISOString().slice(0, 10); // yyyy-mm-dd
+
+    // Find the day entries in the timeline
+    const dayEntries = document.querySelectorAll('.day-entry');
+    const dayList = [
+      { date: '2026-04-10', index: -1 }, // departure - no entry, just scroll to itinerary
+      { date: '2026-04-11', index: 0 },
+      { date: '2026-04-12', index: 1 },
+      { date: '2026-04-13', index: 2 },
+      { date: '2026-04-14', index: 3 },
+      { date: '2026-04-15', index: 4 },
+      { date: '2026-04-16', index: 5 },
+      { date: '2026-04-17', index: 6 },
+      { date: '2026-04-18', index: 7 },
+      { date: '2026-04-19', index: 8 },
+    ];
+
+    if (todayStr < '2026-04-10') return; // before trip — stay at top
+    if (todayStr > '2026-04-19') return; // after trip — stay at top
+
+    for (const day of dayList) {
+      if (todayStr === day.date) {
+        setTimeout(() => {
+          if (day.index >= 0 && dayEntries[day.index]) {
+            dayEntries[day.index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Highlight today's entry briefly
+            dayEntries[day.index].style.transition = 'background 0.5s';
+            dayEntries[day.index].style.background = 'rgba(196,98,45,0.05)';
+            setTimeout(() => { dayEntries[day.index].style.background = ''; }, 2000);
+          } else {
+            // Day 0 (Apr 10) — scroll to itinerary section
+            document.getElementById('itinerary')?.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 600);
+        break;
+      }
+    }
+  })();
 </script>
 
 </body>
