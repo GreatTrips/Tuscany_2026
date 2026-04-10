@@ -1544,6 +1544,9 @@
     '2026-04-19': 'cph',
   };
   (function autoJump() {
+    // If the URL already has a #hash (e.g. coming from "Full Details →" link),
+    // respect that — don't override the user's explicit anchor navigation.
+    if (window.location.hash && window.location.hash.length > 1) return;
     const today = new Date().toISOString().slice(0, 10);
     if (today < '2026-04-10' || today > '2026-04-19') return;
     const targetId = DAY_MAP[today];

@@ -649,16 +649,19 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--terra);
+    color: var(--muted);
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    margin-top: 0.6rem;
-    transition: border-color 0.2s, color 0.2s;
+    background: transparent;
+    border: 1px solid var(--stone);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    margin-top: 0.4rem;
+    transition: all 0.2s;
   }
-  .detail-link:hover { border-color: var(--terra); color: var(--dark); }
+  .detail-link:hover { background: var(--terra); border-color: var(--terra); color: var(--cream); }
 
   .full-guide-banner {
     background: var(--terra);
@@ -748,7 +751,7 @@
   <span class="nav-logo">Tuscany 2026</span>
   <ul class="nav-links">
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#itinerary">Itinerary</a></li>
+    <li><a href="details.html">Itinerary</a></li>
     <li><a href="#bases">Bases</a></li>
     <li><a href="#food">Food</a></li>
     <li><a href="#logistics">Logistics</a></li>
